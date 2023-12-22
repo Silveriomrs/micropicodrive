@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "MicroPicoDrive_Cartridge")(type "KiCad")(uri "${KIPRJMOD}/MicroPicoDrive_Cartridge.pretty")(options "")(descr "Project Library with Special components"))
+)
