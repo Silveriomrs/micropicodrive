@@ -67,36 +67,17 @@
     "visible_layers": "0003130_ffffffff",
     "zone_display_mode": 1
   },
+  "git": {
+    "repo_password": "",
+    "repo_type": "",
+    "repo_username": "",
+    "ssh_key": ""
+  },
   "meta": {
     "filename": "MicroPicoDrive.kicad_prl",
     "version": 3
   },
   "project": {
-    "files": [
-      {
-        "name": "MicroPicoDrive.kicad_sch",
-        "open": false,
-        "window": {
-          "display": 0,
-          "maximized": true,
-          "pos_x": 2300,
-          "pos_y": 86,
-          "size_x": 960,
-          "size_y": 780
-        }
-      },
-      {
-        "name": "MicroPicoDrive.kicad_pcb",
-        "open": false,
-        "window": {
-          "display": 0,
-          "maximized": true,
-          "pos_x": 1680,
-          "pos_y": 0,
-          "size_x": 960,
-          "size_y": 563
-        }
-      }
-    ]
+    "files": []
   }
 }
