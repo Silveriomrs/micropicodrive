@@ -110,22 +110,21 @@ void process_user_interface(){
             if(!CART_OUT()) {program_delay(2000, INIT_SCREEN);} break;
         case DELAY: check_delay(); break;
         case INIT_SCREEN:												//Initialize the display and check if mSD is inserted.
-            if(init_screen()){showMSG(WELCOME,0);}
+            if(init_screen()){showMSG(WELCOME);}
 			if(crt_type == NONE) memset(currentPath, 0, PATH_BUFFER_SIZE);
 			program_delay(2000, WAITING_SD_CARD);
             break;
         case WAITING_SD_CARD:
-			showMSG(SD_WAIT,0);
 			if(mountFS() == FR_OK) {   									//Checks if the FS is mounted.
 				if(crt_type == NONE) uiState = OPEN_FOLDER;				//Is a cartridge formated inserted?, then open the directory (root or sub-directory)
 				else {uiState = CARTRIDGE_READY;}
-				//If the default image is present, load it.
+				//Try to load default image.
 				loadDefault();
-			}
+			}else {showMSG(SD_WAIT);}
             break;
         case OPEN_FOLDER:
 			if( openDIR() != FR_OK) {
-				showMSG(FOLDER_ERR_OPEN,2000);
+				showMSG(FOLDER_ERR_OPEN);
 				uiState = WAITING_SD_CARD;
 			} else {
 				firstFolderEntry = true;
@@ -134,11 +133,11 @@ void process_user_interface(){
             break;
         case READ_FOLDER_ENTRY:
 			if(nextFSEntry()) {
-				showMSG(FOLDER_ERR_READ,2000);
+				showMSG(FOLDER_ERR_READ);
 				uiState = WAITING_SD_CARD;
 			} else {
 				if(fno.fname[0] == 0) {												//TODO: aquí hay una parte de acoplamiento.
-					if(firstFolderEntry) {showMSG(FOLDER_EPTY,0);}
+					if(firstFolderEntry) {showMSG(FOLDER_EPTY);}
 					else { uiState = OPEN_FOLDER; }
 				} else {
 					firstFolderEntry = false;
@@ -166,17 +165,17 @@ void process_user_interface(){
         case FILE_SELECTED:
 			switch(fno.fsize){
 				case CART_MDV_SIZE:
-					showMSG(LDING_MDV,0);
+					showMSG(LDING_MDV);
 					crt_type = MDV;
 					uiState = FILE_LOAD;
 					break;
 				case CART_MPD_SIZE:
-					showMSG(LDING_MDP,0);
+					showMSG(LDING_MDP);
 					crt_type = MPD;
 					uiState = FILE_LOAD;
 					break;
 				default:
-					showMSG(CART_FORMAT_UNK,4000);
+					showMSG(CART_FORMAT_UNK);
 					show_file_name(fno.fname,IN_FOLDER);
 					uiState = SELECT_FILE;
 					break;
@@ -193,7 +192,7 @@ void process_user_interface(){
 			}
 				   
 			if(!res) {
-				showMSG(CART_ERR_LDING,4000);
+				showMSG(CART_ERR_LDING);
 				rewind_path();
 				show_file_name(fno.fname,IN_FOLDER);
 				crt_type = NONE;
@@ -206,7 +205,7 @@ void process_user_interface(){
 			}
             break;
         case CARTRIDGE_READY:
-			showMSG(CART_RDY,0);
+			showMSG(CART_RDY);
 			if(BTN_PRESSED(PIN_BTN_BACK)) {
 				debounce_button(PIN_BTN_BACK);
 				rewind_path();
@@ -216,7 +215,7 @@ void process_user_interface(){
 				removeEvt.event = UTM_CARTRIDGE_REMOVED;
 				event_push(&uiToMdEventQueue, &removeEvt);
 			} else if (BTN_PRESSED(PIN_BTN_SELECT)) {
-				showMSG(CART_SAVING,0);
+				showMSG(CART_SAVING);
 				bool res = false;
 				switch(crt_type) {
 					case MDV: res = save_mdv_cartridge(currentPath); break;
@@ -226,9 +225,9 @@ void process_user_interface(){
                         break;
 				}
 				//Finally shows messages for save result & cart ready (whatever the result was)
-				if(res){ showMSG(CART_SAVED,2000);}
-				else { showMSG(CART_ERR_SAVING,2000);}
-				showMSG(CART_RDY,0);
+				if(res){ showMSG(CART_SAVED);}
+				else { showMSG(CART_ERR_SAVING);}
+				showMSG(CART_RDY);
 			}
             break;
     }
@@ -315,11 +314,12 @@ bool loadDefault(){
 		utmevent_t insertEvt;
 		insertEvt.event = UTM_CARTRIDGE_INSERTED;
 		event_push(&uiToMdEventQueue, &insertEvt);
-		showMSG(LDING_DEFAULT,0);
+		showMSG(LDING_DEFAULT);
 		show_file_name(fno.fname,IN_FOLDER);
 		sleep_ms(3000);
 	}else {
-		printMSG("Error","CONFIG.CFG",3000);
+		//Otherwise there is a mistake in CONFIG.CFG file.
+		showMSG(ERR_CFG);
 		uiState = OPEN_FOLDER;
 	}
 

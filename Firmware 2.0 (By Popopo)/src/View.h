@@ -39,15 +39,17 @@ typedef enum{
 	FOLDER_EPTY,
 	LDING_MDV,
 	LDING_MDP,
-	LDING_DEFAULT
+	LDING_DEFAULT,
+	ERR_CFG
 } MSG_TYPE;
 
 bool init_screen();
 bool init_gui();
 void setSCRM(char* scrm);
 void show_file_name(const char* fname, bool IN_FOLDER);
-void showMSG(MSG_TYPE m,int ms);
-void printMSG(const char* msg1, const char* msg2, int time);
-void printMSGScroll(const char*msg1, const char*msg2, const int time);
+void showMSG(MSG_TYPE m);
+void printMSG(const char* msg1, const char* msg2, const char* msg3, int time);
+void printHorizontalScroll(const char*msg1, const char*msg2, const char* msg3, const int time);
+void printVerticalScroll(const char*msg1, const char*msg2, const char* msg3, const int time);
 
 #endif

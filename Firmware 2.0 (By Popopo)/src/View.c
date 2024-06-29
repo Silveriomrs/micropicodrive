@@ -18,15 +18,15 @@ uint8_t mode = 1;                   //Mode 1 by default
 
 
 /**
- * Shows the current file name on the screen.
+ * Shows the current file name on the screen. It's the main function for browsing the SD Card.
  * The function will take the name and split it if needed.
- * Also it indicate if the file is a directory or an archive.
+ * Also it indicates if the file is a directory or an archive.
  * @param fname Name of the file/directory
  * @param IN_FOLDER It indicates if the pointer is aiming to a folder or not.
  */
 void show_file_name(const char* fname, bool IN_FOLDER){
 	char auxName[12];														//Temporal string to host the name and manipulate it.
-	char type[3];
+	char type[3];															//Stores the type/extension (last 3 characters).
 	int sz = strlen(fname);
 	sprintf(type, "> %s", &fname[sz-3]);
 	char *head = IN_FOLDER ? "# Dir" : type;
@@ -42,7 +42,7 @@ void show_file_name(const char* fname, bool IN_FOLDER){
         PRINT_STR(auxName, 0, 3, mode);										//Print the extension at 3rd line of the screen.
     } else if(mode == 1) {PRINT_STR(fname, 0, 2, mode);						//Otherwise it is printed compleately in line number 2 (screen).
 	} else {
-		printMSGScroll(head,fname,140);
+		printHorizontalScroll(head,fname,"",140);
 		CLR_SCR();
 		PRINT_STR(head,0,0,mode);
 		PRINT_STR(fname,0,2,mode);
@@ -51,92 +51,101 @@ void show_file_name(const char* fname, bool IN_FOLDER){
     RENDER_SCR();
 }
 
+//TODO Test screen routine. DELETE after finish it.
+void testGraphic(){
+	CLR_SCR();
+	PRINT_STR("0", 0, 0, 2);
+	PRINT_STR(" 1", 0, 1, 2);
+	PRINT_STR("  2", 0, 2, 2);
+	PRINT_STR("   3", 0, 3, 2);
+	RENDER_SCR();
+	sleep_ms(1000);
+}
+
 /**
  * Shows the most common messages, after cleaning the screen.
  * @param MSG_TYPE any valid value from it.
  * @param ms Delay hold time (ms) the message before give back the control.
  */
-void showMSG(MSG_TYPE m,int ms){
-	CLR_SCR();
+void showMSG(MSG_TYPE m){
+	// Reference of space for Screen mode 1	-> "12345678901" x 4 lines
+	// Rerefence of space for Screen mode 2 -> "12345" x 4 lines with superposition. Last one incomplete
+	if(false){testGraphic();}
 
 	switch(m){
 		case WELCOME:
-			PRINT_STR(" MicroPico ", 0, 0, 1);
-			PRINT_STR("   Drive   ", 0, 1, 1);
-			PRINT_STR("1.3", 3/mode, 2, 2);								//Development version RC1.3 16:43H 20/MARCH/2024
+			// CLR_SCR();
+			// PRINT_STR(" MicroPico ", 0, 0, 1);
+			// PRINT_STR("   Drive   ", 0, 1, 1);
+			// PRINT_STR("1.3", 3/mode, 2, 2);								//Development version RC1.3 16:43H 20/MARCH/2024
+			// RENDER_SCR();
+			// sleep_ms(0);
+			printVerticalScroll("MicroPico","Drive","1.3", 140);
 			break;
 		case SD_WAIT:
+			CLR_SCR();
 			PRINT_STR("No SD", 0, 0, 2);
 			PRINT_STR("In", 3/mode, 2, 2);
+			RENDER_SCR();
+			sleep_ms(0);
+			//printMSG("No SD","In","",0);
 			break;
 		case CART_RDY:
-			PRINT_STR("Cartridge", 0, 0, mode);
-			PRINT_STR("Ready", 0, 2, mode);
+			printMSG("Cartridge","Ready","",0);
 			break;
 		case FOLDER_ERR_OPEN:											//Here when there was an error opening the folder.
-			PRINT_STR("Error", 0, 0, mode);
-			PRINT_STR("opening", 0, 2, mode);
-			PRINT_STR("folder.", 0, 3, mode);
+			printMSG("Error","opening","folder.",2000);
 			break;
 		case FOLDER_ERR_READ:											//Here when there was an error reading the folder.
-			PRINT_STR("Error", 0, 0, mode);
-			PRINT_STR("reading", 0, 2, mode);
-			PRINT_STR("folder.", 0, 3, mode);
+			printMSG("Error","reading","folder.",2000);
 			break;
 		case FOLDER_EPTY:
-			PRINT_STR("Empty", 0, 0, mode);
-			PRINT_STR("folder", 0, 2, mode);
+			printMSG("Empty","folder","",0);
 			break;
 		case CART_FORMAT_UNK:
-			PRINT_STR("Unknown", 0, 1, mode);
-			PRINT_STR("cartridge", 0, 2, mode);
-			PRINT_STR("format.", 0, 3, mode);
+			printMSG("Unknown","cartridge","format.",4000);
 			break;
 		case CART_ERR_LDING:
-			PRINT_STR("Error", 0, 0, mode);
-			PRINT_STR("loading", 0, 2, mode);
-			PRINT_STR("cartridge.", 0, 3, mode);
+			printMSG("Error","loading","cartridge.",4000);
 			break;
 		case CART_ERR_SAVING:
-			PRINT_STR("Error", 0, 0, mode);
-			PRINT_STR("saving", 0, 2, mode);
-			PRINT_STR("cartridge. ", 0, 3, mode);
+			printMSG("Error","saving","cartridge.",2000);
 			break;
 		case CART_SAVING:
-			PRINT_STR("Saving", 0, 1, mode);
-			PRINT_STR("cartridge..", 0, 2, mode);
+			printMSG("Saving","cartridge..","",0);
 			break;
 		case CART_SAVED:
-			PRINT_STR("Cartridge", 0, 1, mode);
-			PRINT_STR("saved", 0, 2, mode);
+			printMSG("Cartridge","saved","",2000);
 			break;
 		case LDING_MDV:
-			PRINT_STR("Loading MDV", 0, 1, mode);
-			PRINT_STR("cartridge..", 0, 2, mode);
+			printMSG("Loading MDV","cartridge..","",0);
 			break;
 		case LDING_MDP:
-			PRINT_STR("Loading MPD", 0, 1, mode);
-			PRINT_STR("cartridge..", 0, 2, mode);
+			printMSG("Loading MPD","cartridge..","",0);
 			break;
 		case LDING_DEFAULT: 
-			printMSGScroll("","...Default file,",140);
+			printHorizontalScroll("","...Default file,","",140);
+			break;
+		case ERR_CFG:
+			printMSG("Error","CONFIG.CFG","",3000);
 			break;
 	}
-
-	RENDER_SCR();
-	sleep_ms(ms);
 }
 
 /**
  * It prints on the display a double message, separate by lines and holding it for a defined time.
- * @param msg Message to show in the first line.
- * @param value Second message to show, it will be displayed in the second line. Usually a value or resault that need to be shown.
+ * Depending on the screen mode, some messages would not be shown.
+ * For example, in mode 2, third line won't be used.
+ * @param msg1 Message to show in the first line.
+ * @param msg2 Second message to show, it will be displayed in the second line. Usually a value or resault that need to be shown.
+ * @param msg3 Third message to show. It will be shown in the third line.
  * @param time Time in milliseconds to hold the message on the screen before return the control.
 */
-void printMSG(const char* msg1, const char* msg2, int time){
+void printMSG(const char* msg1, const char* msg2, const char* msg3, int time){
 	CLR_SCR();
 	PRINT_STR(msg1,0,0,mode);
 	PRINT_STR(msg2,0,2,mode);
+	if(strcmp(msg3,"") == 0) PRINT_STR(msg3,0,3,mode);
 	RENDER_SCR();
 	sleep_ms(time);
 }
@@ -154,14 +163,37 @@ void printNumber(const char* msg, int number, int time){
 
 /**
  * It shows a message with lateral scroll. Specially conveniente for big fonts.
- * @param msg Message to print.
+ * @param msg1 Message to print in the upper zone of the screen.
+ * @param msg2 Message to print in the body of the screen with horizontal scroll.
  * @param time A good time set is 500ms but users can define others.
 */
-void printMSGScroll(const char*msg1, const char*msg2, const int time){
+void printHorizontalScroll(const char*msg1, const char*msg2, const char* msg3, const int time){
 	int size = strlen(msg2);
-	for(int i = 0;i<size; i++){
-		printMSG(msg1,(char*)&msg2[i],time);
+	int i = 0;
+	while(i<size){
+		printMSG(msg1,(char*)&msg2[i],"",time);
+		i++;
 	}
+}
+
+//TODO: WiP
+void printVerticalScroll(const char*msg1, const char*msg2, const char* msg3, const int time){
+	int mode = 2;
+	int row = 32*2;
+	while(row >= 0){
+		//	PRINT_STR(msg1,0,0,mode);
+		CLR_SCR();
+		//PRINT_STR(msg1,0,row,mode);
+		//PRINT_STR(msg2,0,row+1,mode);
+		//PRINT_STR(msg3,0,row+2,mode);
+		ssd1306_draw_string(&disp, 0, row*mode, mode, msg1);
+		ssd1306_draw_string(&disp, 0, row + 8*mode, mode, msg2);
+		ssd1306_draw_string(&disp, 0, row + 16*mode, mode, msg3);
+		RENDER_SCR();
+		sleep_ms(100);
+		row--;
+	}
+
 }
 
 //Initialize the I2C bus
