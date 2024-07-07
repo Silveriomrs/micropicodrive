@@ -137,8 +137,15 @@ void process_user_interface(){
 				uiState = WAITING_SD_CARD;
 			} else {
 				if(fno.fname[0] == 0) {												//TODO: aquí hay una parte de acoplamiento.
-					if(firstFolderEntry) {showMSG(FOLDER_EPTY);}
-					else { uiState = OPEN_FOLDER; }
+					if(firstFolderEntry) {
+						showMSG(FOLDER_EPTY);
+						while(!BTN_PRESSED(PIN_BTN_BACK)) {;}
+						debounce_button(PIN_BTN_BACK);
+						rewind_path();
+						firstFolderEntry = false;
+						show_file_name(fno.fname,IN_FOLDER);
+						uiState = SELECT_FILE;
+					}else { uiState = OPEN_FOLDER; }
 				} else {
 					firstFolderEntry = false;
 					show_file_name(fno.fname,IN_FOLDER);

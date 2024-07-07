@@ -27,12 +27,23 @@ uint8_t mode = 1;                   //Mode 1 by default
 void show_file_name(const char* fname, bool IN_FOLDER){
 	char auxName[12];														//Temporal string to host the name and manipulate it.
 	char type[3];															//Stores the type/extension (last 3 characters).
+	char *head;
 	int sz = strlen(fname);
-	sprintf(type, "> %s", &fname[sz-3]);
-	char *head = IN_FOLDER ? "# Dir" : type;
+	char name[sz];
+	
+	if(IN_FOLDER ){
+		head = "# Dir";
+	} else {
+		sprintf(type, "> %s", &fname[sz-3]);									//Get the type
+		head = type;
+		//Get only the name when it's a file
+		memset(name, 0, sz);
+		memcpy(name, fname, sz - 4);											
+	}
+
     CLR_SCR();
     PRINT_STR(head, 0, 0, 1);
-	RENDER_SCR();
+	//RENDER_SCR();
 	//Check if the name is too long for one line.
     if(mode == 1 && strlen(fname) > 11) {									//If name with extension is longer than 11 chars, split it in two lines
         memset(auxName, 0, 12);
@@ -42,24 +53,13 @@ void show_file_name(const char* fname, bool IN_FOLDER){
         PRINT_STR(auxName, 0, 3, mode);										//Print the extension at 3rd line of the screen.
     } else if(mode == 1) {PRINT_STR(fname, 0, 2, mode);						//Otherwise it is printed compleately in line number 2 (screen).
 	} else {
-		printHorizontalScroll(head,fname,"",140);
+		if(sz > 8) printHorizontalScroll(head,name,mode*8,140);
 		CLR_SCR();
 		PRINT_STR(head,0,0,mode);
-		PRINT_STR(fname,0,2,mode);
+		PRINT_STR(name,0,2,mode);
 	}
 
     RENDER_SCR();
-}
-
-//TODO Test screen routine. DELETE after finish it.
-void testGraphic(){
-	CLR_SCR();
-	PRINT_STR("0", 0, 0, 2);
-	PRINT_STR(" 1", 0, 1, 2);
-	PRINT_STR("  2", 0, 2, 2);
-	PRINT_STR("   3", 0, 3, 2);
-	RENDER_SCR();
-	sleep_ms(1000);
 }
 
 /**
@@ -70,17 +70,19 @@ void testGraphic(){
 void showMSG(MSG_TYPE m){
 	// Reference of space for Screen mode 1	-> "12345678901" x 4 lines
 	// Rerefence of space for Screen mode 2 -> "12345" x 4 lines with superposition. Last one incomplete
-	if(false){testGraphic();}
+	char *msg1;
+	char *msg2;
+	char *msg3;
+	int t = 0;
 
 	switch(m){
 		case WELCOME:
-			// CLR_SCR();
-			// PRINT_STR(" MicroPico ", 0, 0, 1);
-			// PRINT_STR("   Drive   ", 0, 1, 1);
-			// PRINT_STR("1.3", 3/mode, 2, 2);								//Development version RC1.3 16:43H 20/MARCH/2024
-			// RENDER_SCR();
-			// sleep_ms(0);
-			printVerticalScroll("MicroPico","Drive","1.3", 140);
+			CLR_SCR();
+			PRINT_STR(" MicroPico ", 0, 0, 1);
+			PRINT_STR("   Drive   ", 0, 1, 1);
+			PRINT_STR("1.4", 3/mode, 2, 2);								//Development version RC1.3 16:43H 20/MARCH/2024
+			RENDER_SCR();
+			sleep_ms(0);
 			break;
 		case SD_WAIT:
 			CLR_SCR();
@@ -88,48 +90,78 @@ void showMSG(MSG_TYPE m){
 			PRINT_STR("In", 3/mode, 2, 2);
 			RENDER_SCR();
 			sleep_ms(0);
-			//printMSG("No SD","In","",0);
 			break;
 		case CART_RDY:
-			printMSG("Cartridge","Ready","",0);
+			if(mode == 1) printMSG("Cartridge","Ready","",0);
+			else printMSG("Cart","Ready","",0);
 			break;
 		case FOLDER_ERR_OPEN:											//Here when there was an error opening the folder.
-			printMSG("Error","opening","folder.",2000);
+			if(mode == 1) printMSG("Error","opening","folder.",2000);
+			else printHorizontalScroll("Error","Opening folder",8*mode,140);
 			break;
 		case FOLDER_ERR_READ:											//Here when there was an error reading the folder.
-			printMSG("Error","reading","folder.",2000);
+			if(mode==1) printMSG("Error","reading","folder.",2000);
+			else printHorizontalScroll("Error","reading folder",8*mode,140);
 			break;
 		case FOLDER_EPTY:
-			printMSG("Empty","folder","",0);
+			CLR_SCR();
+			PRINT_STR("Empty", 0, 0, 2);
+			PRINT_STR("Dir", 3/mode, 2, 2);
+			RENDER_SCR();
+			//printMSG("Empty","folder","",0);
 			break;
 		case CART_FORMAT_UNK:
-			printMSG("Unknown","cartridge","format.",4000);
+			if(mode==1) printMSG("Unknown","cartridge","format.",4000);
+			else printHorizontalScroll("UNK","cartridge format",8*mode,140);
 			break;
 		case CART_ERR_LDING:
-			printMSG("Error","loading","cartridge.",4000);
+			if(mode == 1) printMSG("Error","loading","cartridge.",4000);
+			else printHorizontalScroll("Error","loading cartridge",8*mode,140);
 			break;
 		case CART_ERR_SAVING:
-			printMSG("Error","saving","cartridge.",2000);
+			if(mode ==1) printMSG("Error","saving","cartridge.",2000);
+			else printHorizontalScroll("Error","saving cartridge",8*mode,140);
 			break;
 		case CART_SAVING:
-			printMSG("Saving","cartridge..","",0);
+			if(mode==1) printMSG("Saving","cartridge..","",0);
+			else printHorizontalScroll("SAVE","saving cartridge",8*mode,90);
 			break;
 		case CART_SAVED:
-			printMSG("Cartridge","saved","",2000);
+			if(mode==1) printMSG("Cartridge","saved","",2000);
+			else {
+				CLR_SCR();
+				PRINT_STR("SAVED", 0, 1, 2);
+				RENDER_SCR();
+				sleep_ms(2000);
+			}
 			break;
 		case LDING_MDV:
-			printMSG("Loading MDV","cartridge..","",0);
+			if(mode==1) printMSG("Loading MDV","cartridge..","",0);
+			else printHorizontalScroll("LOAD","loading MDV cartridge",8*mode,120);
 			break;
 		case LDING_MDP:
-			printMSG("Loading MPD","cartridge..","",0);
+			if(mode==1)printMSG("Loading MPD","cartridge..","",0);
+			else printHorizontalScroll("LOAD","loading MPD cartridge",8*mode,120);
 			break;
 		case LDING_DEFAULT: 
-			printHorizontalScroll("","...Default file,","",140);
+			printHorizontalScroll("","..default file",1,140);
 			break;
 		case ERR_CFG:
-			printMSG("Error","CONFIG.CFG","",3000);
+			if(mode==1)printMSG("Error","CONFIG.CFG","",3000);
+			else printHorizontalScroll("ERROR","Config.cfg file",8*mode,90);
 			break;
 	}
+}
+
+//TODO: Function for testing purpose. Delete when no need
+void printNumber(const char* msg, int number, int time){
+	CLR_SCR();
+	char scount[12];
+	sprintf(scount, "%d", number);					// convert the count number into a string
+	PRINT_STR(msg,0,1,mode);
+	PRINT_STR(scount,0,2,mode);
+	RENDER_SCR();
+	sleep_ms(time);
 }
 
 /**
@@ -145,55 +177,63 @@ void printMSG(const char* msg1, const char* msg2, const char* msg3, int time){
 	CLR_SCR();
 	PRINT_STR(msg1,0,0,mode);
 	PRINT_STR(msg2,0,2,mode);
-	if(strcmp(msg3,"") == 0) PRINT_STR(msg3,0,3,mode);
+	if(msg3[0] != '\0') PRINT_STR(msg3,0,3,mode);
 	RENDER_SCR();
 	sleep_ms(time);
 }
 
-//TODO: Function for testing purpose. Delete when no need
-void printNumber(const char* msg, int number, int time){
-	CLR_SCR();
-	char scount[12];
-	sprintf(scount, "%d", number);					// convert the count number into a string
-	PRINT_STR(msg,0,1,mode);
-	PRINT_STR(scount,0,2,mode);
-	RENDER_SCR();
-	sleep_ms(time);
-}
 
 /**
  * It shows a message with lateral scroll. Specially conveniente for big fonts.
  * @param msg1 Message to print in the upper zone of the screen.
  * @param msg2 Message to print in the body of the screen with horizontal scroll.
- * @param time A good time set is 500ms but users can define others.
+ * @param time A good time set is 140ms but users can define others.
 */
-void printHorizontalScroll(const char*msg1, const char*msg2, const char* msg3, const int time){
+void printHorizontalScroll(const char*msg1, const char*msg2, int row2, const int time){
 	int size = strlen(msg2);
 	int i = 0;
 	while(i<size){
-		printMSG(msg1,(char*)&msg2[i],"",time);
+		//printMSG(msg1,(char*)&msg2[i],msg3,time);
+		CLR_SCR();
+		if(msg1[0] != '\0') ssd1306_draw_string(&disp, 0, 0, mode, msg1);
+		if(msg2[0] != '\0') ssd1306_draw_string(&disp, 0, row2, mode, (char*)&msg2[i]);
+		RENDER_SCR();
+		sleep_ms(time);
 		i++;
 	}
 }
 
-//TODO: WiP
+/**
+ * It shows a message with vertical scroll. Specially conveniente for little messages.
+ * The function adjust the time related to the font size (mode) to equalize the scroll speed.
+ * The lenght of a message to fit the screen:
+ * 	 on Mode 1 is 11 chars.
+ *   on Mode 2 is 5 chars.
+ *   on Mode 3 is 3 or 4 chars.
+ * For obvious reasons, first message should be not empty nor null.
+ * @param msg1 Firts line message to print.
+ * @param msg2 Second line message to print.
+ * @param msg3 Third line message to print.
+ * @param time A good time set is 140ms but users can define others.
+*/
 void printVerticalScroll(const char*msg1, const char*msg2, const char* msg3, const int time){
-	int mode = 2;
-	int row = 32*2;
-	while(row >= 0){
-		//	PRINT_STR(msg1,0,0,mode);
+	int mode = 3;
+	int row = 32;
+	int countMsg = 1;
+	if(msg2[0] != '\0') countMsg++;
+	if(msg3[0] != '\0') countMsg++;
+	int lastLine = countMsg*(mode*8);
+	
+	//In mode 2, a char uses 16 rows
+	while(row >= -(lastLine)){
 		CLR_SCR();
-		//PRINT_STR(msg1,0,row,mode);
-		//PRINT_STR(msg2,0,row+1,mode);
-		//PRINT_STR(msg3,0,row+2,mode);
-		ssd1306_draw_string(&disp, 0, row*mode, mode, msg1);
-		ssd1306_draw_string(&disp, 0, row + 8*mode, mode, msg2);
-		ssd1306_draw_string(&disp, 0, row + 16*mode, mode, msg3);
+		ssd1306_draw_string(&disp, 0, row, mode, msg1);
+		if(msg2[0] != '\0') ssd1306_draw_string(&disp, 0, row + 8*mode, mode, msg2);
+		if(msg3[0] != '\0') ssd1306_draw_string(&disp, 0, row + 2*8*mode, mode, msg3);
 		RENDER_SCR();
-		sleep_ms(100);
+		sleep_ms(time/mode);
 		row--;
 	}
-
 }
 
 //Initialize the I2C bus

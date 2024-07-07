@@ -9,10 +9,13 @@ U2: Raspberry pico
 J1: Card edge connector, 2x8p, 2.54mm, curved pin.
 J2: Male IDC, 2x7p, 2.54mm (check assembly instructions for more details)
 
+(Optional sound pre.module)
+R2: 5K6, 0603
+Q1: NPN MMBT3904 / 2N3904 1AM SOT23  40V 200mA
 
 --Cartridge--
 
-R1 to R2: 1k, 0603
+R1 to R2: 1k, 0603  (It depends on the specs of each led)
 SW1 to SW3: SMD microswitch push button
 SCR1: 0'49" SD1306 module
 D1 to D2: 3mm LED (green and yellow/red)
