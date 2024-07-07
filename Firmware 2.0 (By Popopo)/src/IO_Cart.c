@@ -28,6 +28,7 @@ uint8_t currentSector = 0;
 bool inFormat = false;
 int skip = 0;
 bool mdInUse = false;
+/** FirstFolderEntry means parents directory '.'. So not a file */
 bool firstFolderEntry = false;
 char currentPath[PATH_BUFFER_SIZE];
 // memset(currentPath, 0, PATH_BUFFER_SIZE);
@@ -516,5 +517,24 @@ bool autoLoadFile(char const *fileName){
         }
     }
 
+    return done;
+}
+
+/**
+ * Check if the actual file pointed is a valid image format to load or not.
+ * It is useful to take desitions while browsing the FS, like ignore not valid formats or file types.
+ * @return TRUE if it is a supported image format. Otherwise it returns FALSE.
+ */
+bool isSelectable(){
+    bool done = false;
+    switch(fno.fsize){
+        case CART_MDV_SIZE:
+        case CART_MPD_SIZE:
+            done = true;
+            break;
+        default:
+            if(IN_FOLDER) done = true;
+            break;
+    }
     return done;
 }

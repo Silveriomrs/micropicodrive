@@ -32,7 +32,7 @@ void show_file_name(const char* fname, bool IN_FOLDER){
 	char name[sz];
 	
 	if(IN_FOLDER ){
-		head = "# Dir";
+		head = "[Dir]";
 	} else {
 		sprintf(type, "> %s", &fname[sz-3]);									//Get the type
 		head = type;
@@ -43,7 +43,7 @@ void show_file_name(const char* fname, bool IN_FOLDER){
 
     CLR_SCR();
     PRINT_STR(head, 0, 0, 1);
-	//RENDER_SCR();
+
 	//Check if the name is too long for one line.
     if(mode == 1 && strlen(fname) > 11) {									//If name with extension is longer than 11 chars, split it in two lines
         memset(auxName, 0, 12);
@@ -80,7 +80,7 @@ void showMSG(MSG_TYPE m){
 			CLR_SCR();
 			PRINT_STR(" MicroPico ", 0, 0, 1);
 			PRINT_STR("   Drive   ", 0, 1, 1);
-			PRINT_STR("1.4", 3/mode, 2, 2);								//Development version RC1.3 16:43H 20/MARCH/2024
+			PRINT_STR("1.4", 3/mode, 2, 2);								//Development version RC7 19:00H 07/07/2024
 			RENDER_SCR();
 			sleep_ms(0);
 			break;
@@ -144,7 +144,7 @@ void showMSG(MSG_TYPE m){
 			else printHorizontalScroll("LOAD","loading MPD cartridge",8*mode,120);
 			break;
 		case LDING_DEFAULT: 
-			printHorizontalScroll("","..default file",1,140);
+			printHorizontalScroll("","..default file",5,140);
 			break;
 		case ERR_CFG:
 			if(mode==1)printMSG("Error","CONFIG.CFG","",3000);

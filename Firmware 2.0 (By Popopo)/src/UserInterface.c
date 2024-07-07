@@ -5,8 +5,8 @@
  *
  * @Author: Dr. Gusman
  * @Author: Modified by Popopo
- * @Version: 1.2.1
- * @date: 04/03/2024
+ * @Version: 1.2.2
+ * @date: 07/07/2024
  */
 
 #include <string.h>
@@ -69,9 +69,31 @@ void process_md_to_ui_event(void* event) {
     }
 }
 
+/**
+ * This function go to the next file on the FS that is valid to browse.
+ * It means, directories, MDV and MDP images.
+ * For that purpose it moves the pointer to the next FS entry, ignoring the non-selectable files.
+ */
+void nextEntry(){
+	nextFSEntry();
+	if (isSelectable()){
+		firstFolderEntry = false;
+		show_file_name(fno.fname,IN_FOLDER);
+		uiState = SELECT_FILE;
+	}
+}
+
 //Debounce a button press
 void debounce_button(uint button) {
-    while(BTN_PRESSED(button)){ sleep_ms(20); }
+    while(BTN_PRESSED(button)){ 
+		sleep_ms(20); 
+		//TODO: Intentar que si el botón es NEXT y se mantiene pulsado, salte a la siguiente entrada.
+		if(button == PIN_BTN_NEXT ){
+			sleep_ms(200); 
+			if(BTN_PRESSED(button)) nextEntry();
+			
+		} 
+	}
     sleep_ms(200);
 }
 
@@ -143,10 +165,8 @@ void process_user_interface(){
 						debounce_button(PIN_BTN_BACK);
 						rewind_path();
 						firstFolderEntry = false;
-						show_file_name(fno.fname,IN_FOLDER);
-						uiState = SELECT_FILE;
 					}else { uiState = OPEN_FOLDER; }
-				} else {
+				} else if(isSelectable()){	//TODO: Con la nueva función esto puede sobrar. Con sólo llamar la nueva y la nueva devuelva el RESULT de nextFSEntry()
 					firstFolderEntry = false;
 					show_file_name(fno.fname,IN_FOLDER);
 					uiState = SELECT_FILE;
@@ -309,7 +329,7 @@ bool loadDefault(){
     //Find value for operator SCRM (Screen mode)
     scrm = spliter((char*)ctext,"SCRM");
 	//setSCRM(scrm);
-	setSCRM("2");
+	setSCRM(scrm);
 	//Try to load the file.
 	done = autoLoadFile(fileName);
 	//Sets state machine as poinng a file in a non empty directory
@@ -323,7 +343,7 @@ bool loadDefault(){
 		event_push(&uiToMdEventQueue, &insertEvt);
 		showMSG(LDING_DEFAULT);
 		show_file_name(fno.fname,IN_FOLDER);
-		sleep_ms(3000);
+		sleep_ms(2500);
 	}else {
 		//Otherwise there is a mistake in CONFIG.CFG file.
 		showMSG(ERR_CFG);

@@ -92,5 +92,6 @@ bool load_mpd_cartridge(char const *file);
 bool isFilePresent(char const *file);
 bool loadFile(char const *file, BYTE *buffDataIn, const UINT block, UINT *br);
 bool autoLoadFile(char const *fileName);
+bool isSelectable();
 
 #endif
