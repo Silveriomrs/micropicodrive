@@ -153,25 +153,20 @@ void process_user_interface(){
 			}
             break;
         case READ_FOLDER_ENTRY:
-			if(CART_OUT()) uiState = IDLE;
-			else if(nextFSEntry()) {
+			if(CART_OUT()){
+				uiState = IDLE;
+			} else if(nextFSEntry()) {
 				showMSG(FOLDER_ERR_READ);
 				uiState = WAITING_SD_CARD;
-			} else {
-				if(fno.fname[0] == 0) {
-					if(firstFolderEntry) {
-						showMSG(FOLDER_EPTY);
-						// while(!BTN_PRESSED(PIN_BTN_BACK)) {;}  //TODO: MAL BLOQUEA!!! quitar en cuanto se pueda.
-						// debounce_button(PIN_BTN_BACK);
-						// rewind_path();
-						// firstFolderEntry = false;
-						uiState = SELECT_FILE;
-					}else { uiState = OPEN_FOLDER; }
-				} else if(isSelectable()){	//TODO: Con la nueva función esto puede sobrar. Con sólo llamar la nueva y la nueva devuelva el RESULT de nextFSEntry()
-					firstFolderEntry = false;
-					show_file_name(fno.fname,IN_FOLDER);
+			} else if(fno.fname[0] == 0) {
+				if(firstFolderEntry) {
+					showMSG(FOLDER_EPTY);
 					uiState = SELECT_FILE;
-				}
+				}else { uiState = OPEN_FOLDER; }
+			} else if(isSelectable()){	//TODO: Esto puede sobrar. Con sólo llamar la nueva y la nueva devuelva el RESULT de nextFSEntry()
+				firstFolderEntry = false;
+				show_file_name(fno.fname,IN_FOLDER);
+				uiState = SELECT_FILE;
 			}
             break;
         case SELECT_FILE:
@@ -330,7 +325,7 @@ bool loadDefault(){
     //Find value for operator SCRM (Screen mode)
     scrm = spliter((char*)ctext,"SCRM");
 	//setSCRM(scrm);
-	setSCRM(scrm);
+	setSCRM("2");
 	//Try to load the file.
 	done = autoLoadFile(fileName);
 	//Sets state machine as poinng a file in a non empty directory
