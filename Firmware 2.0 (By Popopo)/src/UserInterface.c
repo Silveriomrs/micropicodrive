@@ -90,8 +90,7 @@ void debounce_button(uint button) {
 		//TODO: Intentar que si el botón es NEXT y se mantiene pulsado, salte a la siguiente entrada.
 		if(button == PIN_BTN_NEXT ){
 			sleep_ms(200); 
-			if(BTN_PRESSED(button)) nextEntry();
-			
+			if(BTN_PRESSED(button)) nextEntry();		
 		} 
 	}
     sleep_ms(200);
@@ -154,17 +153,19 @@ void process_user_interface(){
 			}
             break;
         case READ_FOLDER_ENTRY:
-			if(nextFSEntry()) {
+			if(CART_OUT()) uiState = IDLE;
+			else if(nextFSEntry()) {
 				showMSG(FOLDER_ERR_READ);
 				uiState = WAITING_SD_CARD;
 			} else {
-				if(fno.fname[0] == 0) {												//TODO: aquí hay una parte de acoplamiento.
+				if(fno.fname[0] == 0) {
 					if(firstFolderEntry) {
 						showMSG(FOLDER_EPTY);
-						while(!BTN_PRESSED(PIN_BTN_BACK)) {;}
-						debounce_button(PIN_BTN_BACK);
-						rewind_path();
-						firstFolderEntry = false;
+						// while(!BTN_PRESSED(PIN_BTN_BACK)) {;}  //TODO: MAL BLOQUEA!!! quitar en cuanto se pueda.
+						// debounce_button(PIN_BTN_BACK);
+						// rewind_path();
+						// firstFolderEntry = false;
+						uiState = SELECT_FILE;
 					}else { uiState = OPEN_FOLDER; }
 				} else if(isSelectable()){	//TODO: Con la nueva función esto puede sobrar. Con sólo llamar la nueva y la nueva devuelva el RESULT de nextFSEntry()
 					firstFolderEntry = false;
