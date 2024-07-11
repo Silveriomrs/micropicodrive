@@ -325,7 +325,7 @@ bool loadDefault(){
     //Find value for operator SCRM (Screen mode)
     scrm = spliter((char*)ctext,"SCRM");
 	//setSCRM(scrm);
-	setSCRM("2");
+	setSCRM(scrm);
 	//Try to load the file.
 	done = autoLoadFile(fileName);
 	//Sets state machine as poinng a file in a non empty directory
