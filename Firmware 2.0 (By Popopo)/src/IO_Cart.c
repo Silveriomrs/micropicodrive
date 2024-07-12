@@ -287,6 +287,7 @@ void fix_cartridge_checksums(){
         for (int bExtra = 0; bExtra < 84; bExtra++)
                 sector->Record.ExtraBytes[bExtra] = bExtra % 2 == 0 ? 0xAA : 0x55;
 
+        //That is equivalent to force it anyway. Exchanging saving memory for time of processing.
         if (sector->Record.ExtraBytesChecksum != 0x3b19)
             sector->Record.ExtraBytesChecksum = 0x3b19;
 
@@ -299,7 +300,7 @@ bool save_mdv_cartridge(char const *file) {
     if(pf_open(file) != FR_OK) return false;
 
     UINT writeSize;
-    uint8_t tmpByte = 0;
+    uint8_t tmpByte;
     int bufferPos = 0;
 
     uint8_t padBuffer[MDV_PAD_SIZE];
@@ -417,7 +418,7 @@ bool load_mdv_cartridge(char const *file) {
 
     UINT readSize = 0;
     int bufferPos = 0;
-    int filePos = 0;
+    int filePos;
 
     for(int buc = 0; buc < 255; buc++){
         filePos = buc * MDV_SECTOR_SIZE + MDV_PREAMBLE_SIZE; //skip preamble
@@ -487,7 +488,6 @@ bool loadFile(char const *file, BYTE *buffDataIn, const UINT block, UINT *br){ r
 */
 bool autoLoadFile(char const *fileName){
     bool done = false;
-    int count = 0;
     if(!isFilePresent(fileName)) {return false;}
     pf_readdir(&dir, NULL);
     //Start searching.

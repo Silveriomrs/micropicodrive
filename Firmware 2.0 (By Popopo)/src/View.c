@@ -20,9 +20,9 @@ uint8_t mode = 1;                   //Mode 1 by default
 /**
  * Shows the current file name on the screen. It's the main function for browsing the SD Card.
  * The function will take the name and split it if needed.
- * Also it indicates if the file is a directory or an archive.
+ * Also it shows if the file is a directory or an archive.
  * @param fname Name of the file/directory
- * @param IN_FOLDER It indicates if the pointer is aiming to a folder or not.
+ * @param IN_FOLDER It indicates if the pointer is aiming at a folder or not.
  */
 void show_file_name(const char* fname, bool IN_FOLDER){
 	char auxName[12];														//Temporal string to host the name and manipulate it.
@@ -53,7 +53,7 @@ void show_file_name(const char* fname, bool IN_FOLDER){
         PRINT_STR(auxName, 0, 3, mode);										//Print the extension at 3rd line of the screen.
     } else if(mode == 1) {PRINT_STR(fname, 0, 2, mode);						//Otherwise it is printed compleately in line number 2 (screen).
 	} else {
-		if(sz > 8) printHorizontalScroll(head,name,mode*8,140);
+		if(sz > 8) printHorizontalScroll(head,name,mode*8,140);  //TODO: Puede ser que deba valer 9, para evitar scroll por punto (letras(5) + punto(1) + ext(3))
 		CLR_SCR();
 		PRINT_STR(head,0,0,mode);
 		PRINT_STR(name,0,2,mode);
@@ -70,10 +70,10 @@ void show_file_name(const char* fname, bool IN_FOLDER){
 void showMSG(MSG_TYPE m){
 	// Reference of space for Screen mode 1	-> "12345678901" x 4 lines
 	// Rerefence of space for Screen mode 2 -> "12345" x 4 lines with superposition. Last one incomplete
-	char *msg1;
-	char *msg2;
-	char *msg3;
-	int t = 0;
+	// char *msg1;
+	// char *msg2;
+	// char *msg3;
+	// int t = 0;
 
 	switch(m){
 		case WELCOME:
@@ -154,15 +154,15 @@ void showMSG(MSG_TYPE m){
 }
 
 //TODO: Function for testing purpose. Delete when no need
-void printNumber(const char* msg, int number, int time){
-	CLR_SCR();
-	char scount[12];
-	sprintf(scount, "%d", number);					// convert the count number into a string
-	PRINT_STR(msg,0,1,mode);
-	PRINT_STR(scount,0,2,mode);
-	RENDER_SCR();
-	sleep_ms(time);
-}
+// void printNumber(const char* msg, int number, int time){
+// 	CLR_SCR();
+// 	char scount[12];
+// 	sprintf(scount, "%d", number);					// convert the count number into a string
+// 	PRINT_STR(msg,0,1,mode);
+// 	PRINT_STR(scount,0,2,mode);
+// 	RENDER_SCR();
+// 	sleep_ms(time);
+// }
 
 /**
  * It prints on the display a double message, separate by lines and holding it for a defined time.
@@ -292,7 +292,6 @@ void setSCRM(char* scrm){
 	switch(m){
 		case(1):
 		case(2):
-		case(3):
 			mode = m;
 			break;
 		default:

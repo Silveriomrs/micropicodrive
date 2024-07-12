@@ -75,6 +75,7 @@ void process_md_to_ui_event(void* event) {
  * For that purpose it moves the pointer to the next FS entry, ignoring the non-selectable files.
  */
 void nextEntry(){
+	//TODO: Funciona muy bien, pero ¿Se comportaría bien ante una excepción? (falta de tarjeta, error de directorio, etc)
 	nextFSEntry();
 	if (isSelectable()){
 		firstFolderEntry = false;
@@ -83,11 +84,17 @@ void nextEntry(){
 	}
 }
 
-//Debounce a button press
+/**
+ * Debounce a button pressed.
+ * It gives some sleeping process time to ignore extra holding time when pressing a button.
+ * When the button is the button 'NEXT' instead of debounce completealy, it adds some latency
+ *  and the behavior of read the new FS entry. Allowing a softer file browsing.
+ * @param button The button to apply debounce.
+ */
 void debounce_button(uint button) {
     while(BTN_PRESSED(button)){ 
 		sleep_ms(20); 
-		//TODO: Intentar que si el botón es NEXT y se mantiene pulsado, salte a la siguiente entrada.
+		//When the button is 'Next', it skip the entry and goes to the next one after a holding time (retard).
 		if(button == PIN_BTN_NEXT ){
 			sleep_ms(200); 
 			if(BTN_PRESSED(button)) nextEntry();		
@@ -324,7 +331,7 @@ bool loadDefault(){
     fileName = spliter((char*)buffData,"FILE");
     //Find value for operator SCRM (Screen mode)
     scrm = spliter((char*)ctext,"SCRM");
-	//setSCRM(scrm);
+	//setSCRM("2");
 	setSCRM(scrm);
 	//Try to load the file.
 	done = autoLoadFile(fileName);
@@ -349,23 +356,37 @@ bool loadDefault(){
 	return done;
 }
 
+/**
+ * It initializes each button and its purpose is to save some 
+ * memory.
+ */
+void setUpButton(uint btn){
+	gpio_init(btn);
+	gpio_set_dir(btn, false);
+	gpio_pull_up(btn);
+}
 
 //Initialize UI buttons
 void init_buttons(){
-    gpio_init(PIN_BTN_BACK);
-    gpio_init(PIN_BTN_NEXT);
-    gpio_init(PIN_BTN_SELECT);
-    gpio_init(PIN_UI_DETECT);
+	setUpButton(PIN_BTN_BACK);
+	setUpButton(PIN_BTN_NEXT);
+	setUpButton(PIN_BTN_SELECT);
+	setUpButton(PIN_UI_DETECT);
 
-    gpio_set_dir(PIN_BTN_BACK, false);
-    gpio_set_dir(PIN_BTN_NEXT, false);
-    gpio_set_dir(PIN_BTN_SELECT, false);
-    gpio_set_dir(PIN_UI_DETECT, false);
+    // gpio_init(PIN_BTN_BACK);
+    // gpio_init(PIN_BTN_NEXT);
+    // gpio_init(PIN_BTN_SELECT);
+    // gpio_init(PIN_UI_DETECT);
 
-    gpio_pull_up(PIN_BTN_BACK);
-    gpio_pull_up(PIN_BTN_NEXT);
-    gpio_pull_up(PIN_BTN_SELECT);
-    gpio_pull_up(PIN_UI_DETECT);
+    // gpio_set_dir(PIN_BTN_BACK, false);
+    // gpio_set_dir(PIN_BTN_NEXT, false);
+    // gpio_set_dir(PIN_BTN_SELECT, false);
+    // gpio_set_dir(PIN_UI_DETECT, false);
+
+    // gpio_pull_up(PIN_BTN_BACK);
+    // gpio_pull_up(PIN_BTN_NEXT);
+    // gpio_pull_up(PIN_BTN_SELECT);
+    // gpio_pull_up(PIN_UI_DETECT);
 }
 
 //Main user interface loop
