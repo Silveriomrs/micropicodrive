@@ -28,14 +28,14 @@ New 1.4 design changes:
 + Sound System ready for sound emulation or new features related with it (Working in progress).
 
 
-## What is coming (TODO)
+## What is coming (TODO functionalities)
 
 Majority of users find the device functional and accomplish the expectations, yet it keeps some nice surprises.
 
 - [x] Config file to set personal preferences.
-- [ ] New screen modes with bigger fonts (WiP).
+- [x] New screen modes with bigger fonts.
 - [ ] Sound emulation of the motor (WiP).
-- [ ] MIDI player.
+- [ ] MIDI player (WiP).
 - [ ] Bluetooth cartridge and its APP to load images from other devices (PC, Phone, Tablet...).
 
 ### Some extra add-ons that could come
