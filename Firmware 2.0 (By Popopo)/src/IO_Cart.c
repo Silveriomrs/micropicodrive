@@ -495,7 +495,7 @@ bool autoLoadFile(char const *fileName){
         if(nextFSEntry() != FR_OK || fno.fname[0] == 0){break;}
         //Comparing names of file pointed in FAT table and file name to load.
 		if(strcmp(fno.fname,fileName) == 0){
-           //State of 'select file', not sure if necessary
+           //TODO: IN_FOLDER is the State of 'select file', not sure if necessary
            IN_FOLDER;
            //Selected file, use the case to know its format and load it properly
             switch(fno.fsize){

@@ -11,7 +11,7 @@
 
 #include <string.h>
 #include <stdio.h>
-//Si quito no se queja
+//TODO: Probar pues si quito no se queja
 #include "hardware/spi.h"
 #include "hardware/gpio.h"
 #include "EventMachine.h"
@@ -25,16 +25,13 @@
 
 #define LED_ON(LED) gpio_put(LED, true)
 #define LED_OFF(LED) gpio_put(LED, false)
-#define CART_OUT() gpio_get(PIN_UI_DETECT)								//Detect Cartridge disconected. TRUE if disconected, FALSE in other case
+#define IS_CART_OUT() gpio_get(PIN_UI_DETECT)								//Detect Cartridge disconected. TRUE if disconected, FALSE in other case
 #define BTN_PRESSED(BUTTON) (!gpio_get(BUTTON))							//Detect Button pressed. TRUE if pressed, FALSE in other case
 
 USER_INTERFACE_STATE uiState = IDLE;
 USER_INTERFACE_STATE uiNextState;
 
 uint64_t delayEnd;
-
-// bool mdInUse = false;
-// bool firstFolderEntry = false;
 
 //Process events from the MD control
 void process_md_to_ui_event(void* event) {
@@ -73,15 +70,12 @@ void process_md_to_ui_event(void* event) {
  * This function go to the next file on the FS that is valid to browse.
  * It means, directories, MDV and MDP images.
  * For that purpose it moves the pointer to the next FS entry, ignoring the non-selectable files.
+ * @return FRESULT res with the result of the operation.
  */
-void nextEntry(){
-	//TODO: Funciona muy bien, pero ¿Se comportaría bien ante una excepción? (falta de tarjeta, error de directorio, etc)
-	nextFSEntry();
-	if (isSelectable()){
-		firstFolderEntry = false;
-		show_file_name(fno.fname,IN_FOLDER);
-		uiState = SELECT_FILE;
-	}
+FRESULT nextEntry(){
+	FRESULT res = nextFSEntry();
+	if (res == FR_OK && isSelectable()) show_file_name(fno.fname,IN_FOLDER);
+	return res;
 }
 
 /**
@@ -131,11 +125,11 @@ void check_delay(){
 //Process the user interface state machine
 void process_user_interface(){
 	//Firstly check out if Cartridge is not inserted (OUT).
-	if(CART_OUT()) uiState = IDLE;
+	if(IS_CART_OUT()) uiState = IDLE;
 	//States of the machine
     switch(uiState){
         case IDLE:
-            if(!CART_OUT()) {program_delay(2000, INIT_SCREEN);} break;
+            if(!IS_CART_OUT()) {program_delay(2000, INIT_SCREEN);} break;
         case DELAY: check_delay(); break;
         case INIT_SCREEN:												//Initialize the display and check if mSD is inserted.
             if(init_screen()){showMSG(WELCOME);}
@@ -160,19 +154,18 @@ void process_user_interface(){
 			}
             break;
         case READ_FOLDER_ENTRY:
-			if(CART_OUT()){
+			if(IS_CART_OUT()){
 				uiState = IDLE;
-			} else if(nextFSEntry()) {
+			} else if (nextEntry() != FR_OK){
 				showMSG(FOLDER_ERR_READ);
-				uiState = WAITING_SD_CARD;
+				uiState = WAITING_SD_CARD;		
 			} else if(fno.fname[0] == 0) {
 				if(firstFolderEntry) {
 					showMSG(FOLDER_EPTY);
 					uiState = SELECT_FILE;
 				}else { uiState = OPEN_FOLDER; }
-			} else if(isSelectable()){	//TODO: Esto puede sobrar. Con sólo llamar la nueva y la nueva devuelva el RESULT de nextFSEntry()
+			} else if(isSelectable()){
 				firstFolderEntry = false;
-				show_file_name(fno.fname,IN_FOLDER);
 				uiState = SELECT_FILE;
 			}
             break;
@@ -247,6 +240,7 @@ void process_user_interface(){
 			} else if (BTN_PRESSED(PIN_BTN_SELECT)) {
 				showMSG(CART_SAVING);
 				bool res = false;
+				//TODO: de distinguir y guardar adecuadamente que se encargue IO.
 				switch(crt_type) {
 					case MDV: res = save_mdv_cartridge(currentPath); break;
 					//case IMG: res = save_img_cartridge(); break;
@@ -257,7 +251,6 @@ void process_user_interface(){
 				//Finally shows messages for save result & cart ready (whatever the result was)
 				if(res){ showMSG(CART_SAVED);}
 				else { showMSG(CART_ERR_SAVING);}
-				showMSG(CART_RDY);
 			}
             break;
     }
@@ -328,10 +321,10 @@ bool loadDefault(){
     strcpy(ctext,(char *)buffData);
 
     //Find value for operator FILE (Default file).
-    fileName = spliter((char*)buffData,"FILE");
-    //Find value for operator SCRM (Screen mode)
+	fileName = spliter((char*)ctext,"FILE");
+	//Copy again the buffer & Find value for operator SCRM (Screen mode)
+	strcpy(ctext,(char *)buffData); 						
     scrm = spliter((char*)ctext,"SCRM");
-	//setSCRM("2");
 	setSCRM(scrm);
 	//Try to load the file.
 	done = autoLoadFile(fileName);
@@ -358,7 +351,7 @@ bool loadDefault(){
 
 /**
  * It initializes each button and its purpose is to save some 
- * memory.
+ * memory, by set them upp with a default initial value.
  */
 void setUpButton(uint btn){
 	gpio_init(btn);
@@ -366,27 +359,15 @@ void setUpButton(uint btn){
 	gpio_pull_up(btn);
 }
 
-//Initialize UI buttons
+/**
+ * Init the buttons.
+ * It's use the auxiliar function setUpButton.
+ */
 void init_buttons(){
 	setUpButton(PIN_BTN_BACK);
 	setUpButton(PIN_BTN_NEXT);
 	setUpButton(PIN_BTN_SELECT);
 	setUpButton(PIN_UI_DETECT);
-
-    // gpio_init(PIN_BTN_BACK);
-    // gpio_init(PIN_BTN_NEXT);
-    // gpio_init(PIN_BTN_SELECT);
-    // gpio_init(PIN_UI_DETECT);
-
-    // gpio_set_dir(PIN_BTN_BACK, false);
-    // gpio_set_dir(PIN_BTN_NEXT, false);
-    // gpio_set_dir(PIN_BTN_SELECT, false);
-    // gpio_set_dir(PIN_UI_DETECT, false);
-
-    // gpio_pull_up(PIN_BTN_BACK);
-    // gpio_pull_up(PIN_BTN_NEXT);
-    // gpio_pull_up(PIN_BTN_SELECT);
-    // gpio_pull_up(PIN_UI_DETECT);
 }
 
 //Main user interface loop
@@ -403,5 +384,3 @@ void RunUserInterface(){
         else check_cancel();
     }
 }
-
-//TODO: En un par de estados, es ineficiente estar rescribiendo el mismo mensaje en pantalla hasta evento de cambio de estado.
