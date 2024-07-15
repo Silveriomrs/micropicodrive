@@ -13,10 +13,10 @@
 #include "ssd1306/ssd1306.h"
 
 //LEDs Pins output
-#define PIN_LED_ON 25
-#define PIN_LED_SELECT 9
-#define PIN_LED_READ 11
-#define PIN_LED_WRITE 10
+#define PIN_LED_PWR 25		/** Power LED RPB Pico */
+#define PIN_LED_SELECT 9	/** LED unit selected */
+#define PIN_LED_READ 11		/** LED unit in reading state */
+#define PIN_LED_WRITE 10	/** LED unit in writing state */
 //Screen and SDCart pins.
 #define I2C_PORT i2c0
 #define I2C_SDA 20

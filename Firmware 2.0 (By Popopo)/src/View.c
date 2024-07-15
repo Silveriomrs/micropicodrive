@@ -77,10 +77,10 @@ void showMSG(MSG_TYPE m){
 
 	switch(m){
 		case WELCOME:
+			printVerticalScroll(" QL","","",110);
 			CLR_SCR();
-			PRINT_STR(" MicroPico ", 0, 0, 1);
-			PRINT_STR("   Drive   ", 0, 1, 1);
-			PRINT_STR("1.4", 3/mode, 2, 2);								//Development version RC7 19:00H 07/07/2024
+			PRINT_STR(" MPD", 0, 0, 2);
+			PRINT_STR("V0.10", 0, 2, 2);								//Development version RC10 11:00H 15/07/2024
 			RENDER_SCR();
 			sleep_ms(0);
 			break;
@@ -108,7 +108,6 @@ void showMSG(MSG_TYPE m){
 			PRINT_STR("Empty", 0, 0, 2);
 			PRINT_STR("Dir", 3/mode, 2, 2);
 			RENDER_SCR();
-			//printMSG("Empty","folder","",0);
 			break;
 		case CART_FORMAT_UNK:
 			if(mode==1) printMSG("Unknown","cartridge","format.",4000);
@@ -144,7 +143,7 @@ void showMSG(MSG_TYPE m){
 			else printHorizontalScroll("LOAD","loading MPD cartridge",8*mode,120);
 			break;
 		case LDING_DEFAULT: 
-			printHorizontalScroll("","..default file",5,140);
+			printHorizontalScroll("","default file",5,110);
 			break;
 		case ERR_CFG:
 			if(mode==1)printMSG("Error","CONFIG.CFG","",3000);
@@ -249,17 +248,17 @@ void init_i2c(){
 
 //Initialize UI leds
 void init_leds(){
-    gpio_init(PIN_LED_ON);
+    gpio_init(PIN_LED_PWR);
     gpio_init(PIN_LED_SELECT);
     gpio_init(PIN_LED_READ);
     gpio_init(PIN_LED_WRITE);
 
-    gpio_set_dir(PIN_LED_ON, true);
+    gpio_set_dir(PIN_LED_PWR, true);
     gpio_set_dir(PIN_LED_SELECT, true);
     gpio_set_dir(PIN_LED_READ, true);
     gpio_set_dir(PIN_LED_WRITE, true);
 
-    gpio_put(PIN_LED_ON, 1);
+    gpio_put(PIN_LED_PWR, 1);
 }
 
 /**
@@ -282,7 +281,7 @@ bool init_screen(){
  * @param scrm Screen mode to use {default = 1, medium = 2, big = 3}
  */
 void setSCRM(char* scrm){
-	//TODO Decidir si usamos strtol o atoi. El primero es más robusto, pero requiere mayor código.
+	//TODO What better to use strtol o atoi?. first safer than second one, but requires more code/memory.
 	//Converting it into int
 	//char *endptr;
 	//int m = strtol(scrm, &endptr, 10);

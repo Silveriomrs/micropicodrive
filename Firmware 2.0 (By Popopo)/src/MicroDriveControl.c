@@ -78,6 +78,8 @@ void deselect_md() {
     //Disable the status machine
     deselect_PIO_status();
     //Disable the DMAs if they're active
+    // if(activeStatus >= MDA_READ_HEADER_GAP && activeStatus <= MDA_READ_SECTOR) disable_DMAs(true);
+    // else if(activeStatus >= MDA_WRITE_HEADER_GAP && activeStatus <= MDA_WRITE_SECTOR) disable_DMAs(false);
     if(activeStatus >= MDA_READ_HEADER || activeStatus <= MDA_READ_SECTOR) disable_DMAs(true);
     else if(activeStatus >= MDA_WRITE_HEADER_GAP || activeStatus <= MDA_WRITE_SECTOR) disable_DMAs(false);
     //Set dir to input to avoid problems

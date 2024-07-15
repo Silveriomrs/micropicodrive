@@ -25,8 +25,8 @@
 
 #define LED_ON(LED) gpio_put(LED, true)
 #define LED_OFF(LED) gpio_put(LED, false)
-#define IS_CART_OUT() gpio_get(PIN_UI_DETECT)								//Detect Cartridge disconected. TRUE if disconected, FALSE in other case
-#define BTN_PRESSED(BUTTON) (!gpio_get(BUTTON))							//Detect Button pressed. TRUE if pressed, FALSE in other case
+#define IS_CART_OUT() gpio_get(PIN_UI_DETECT)				//Detect Cartridge disconected. TRUE if disconected, FALSE in other case
+#define BTN_PRESSED(BUTTON) (!gpio_get(BUTTON))				//Detect Button pressed. TRUE if pressed, FALSE in other case
 
 USER_INTERFACE_STATE uiState = IDLE;
 USER_INTERFACE_STATE uiNextState;
@@ -117,9 +117,19 @@ void program_delay(uint64_t ms_delay, USER_INTERFACE_STATE nextState){
     uiState = DELAY;
 }
 
-void check_delay(){
+/**
+ * The function checks if the delay time was reached.
+ * While it awaits, make the power led flash continuously.
+ * @return TRUE if the time was reached. Otherwise FALSE.
+ */
+bool check_delay(){
+	bool done = false;
     uint64_t currentTime = time_us_64();
-    if(currentTime >= delayEnd) uiState = uiNextState;
+    if(currentTime >= delayEnd)	{
+		uiState = uiNextState;
+		done = true;
+	}
+	return done;
 }
 
 //Process the user interface state machine
@@ -129,12 +139,21 @@ void process_user_interface(){
 	//States of the machine
     switch(uiState){
         case IDLE:
-            if(!IS_CART_OUT()) {program_delay(2000, INIT_SCREEN);} break;
-        case DELAY: check_delay(); break;
-        case INIT_SCREEN:												//Initialize the display and check if mSD is inserted.
-            if(init_screen()){showMSG(WELCOME);}
-			if(crt_type == NONE) memset(currentPath, 0, PATH_BUFFER_SIZE);
-			program_delay(2000, WAITING_SD_CARD);
+            if(!IS_CART_OUT()) {program_delay(2000, INIT_SCREEN);}
+			else {
+				sleep_ms(500);
+				gpio_put(PIN_LED_PWR, !gpio_get(PIN_LED_PWR));
+			}
+			break;
+        case DELAY:
+			if(check_delay()) LED_ON(PIN_LED_PWR);
+		    break;
+        case INIT_SCREEN:												//Initialize the display and check if mSD is inserted.	
+            if(init_screen()){
+				showMSG(WELCOME);
+				program_delay(2000, WAITING_SD_CARD);
+				if(crt_type == NONE) memset(currentPath, 0, PATH_BUFFER_SIZE);
+			} 
             break;
         case WAITING_SD_CARD:
 			if(mountFS() == FR_OK) {   									//Checks if the FS is mounted.
@@ -251,6 +270,9 @@ void process_user_interface(){
 				//Finally shows messages for save result & cart ready (whatever the result was)
 				if(res){ showMSG(CART_SAVED);}
 				else { showMSG(CART_ERR_SAVING);}
+			} else if(BTN_PRESSED(PIN_BTN_NEXT)){
+				show_file_name(fno.fname,IN_FOLDER);
+				sleep_ms(1100);
 			}
             break;
     }
@@ -323,7 +345,7 @@ bool loadDefault(){
     //Find value for operator FILE (Default file).
 	fileName = spliter((char*)ctext,"FILE");
 	//Copy again the buffer & Find value for operator SCRM (Screen mode)
-	strcpy(ctext,(char *)buffData); 						
+	strcpy(ctext,(char *)buffData);
     scrm = spliter((char*)ctext,"SCRM");
 	setSCRM(scrm);
 	//Try to load the file.
@@ -339,7 +361,7 @@ bool loadDefault(){
 		event_push(&uiToMdEventQueue, &insertEvt);
 		showMSG(LDING_DEFAULT);
 		show_file_name(fno.fname,IN_FOLDER);
-		sleep_ms(2500);
+		sleep_ms(2000);
 	}else {
 		//Otherwise there is a mistake in CONFIG.CFG file.
 		showMSG(ERR_CFG);
