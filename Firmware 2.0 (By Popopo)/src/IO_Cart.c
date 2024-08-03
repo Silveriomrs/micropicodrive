@@ -396,15 +396,55 @@ bool save_mpd_cartridge(char const *file) {
     return true;
 }
 
+
+/**
+ * Save the MDV image in the right format.
+ * This function filter the image type (MDP or MDV) and
+ * calls to the right sub-function to do the operation.
+ * @return True if the operation was successful. False otherwise.
+ */
+bool saveMDx(){
+    bool done = false;
+    switch(crt_type) {
+        case MDV: done = save_mdv_cartridge(currentPath); break;
+        //case IMG: res = save_img_cartridge(); break;
+        case MPD: done = save_mpd_cartridge(currentPath); break;
+        default:
+            break;
+    }
+
+    return done;
+}
+
+
 /**
  * Common code to load_mdv_cartridge and load_mdp_cartridge.
  * It finishs the loading image of a MDV or MDP.
+ * @return True if the operation was successful. False otherwise.
 */
-void loadMDx(){
+bool loadMDx(){
+    bool done = false;
+    //Update the path to the file.
+    updatePath();
+    //Load the file considering its type.
+    switch(crt_type) {
+        case MDV: done = load_mdv_cartridge(currentPath); break;
+        case MPD: done = load_mpd_cartridge(currentPath); break;
+        default:
+            break;
+	}
+
+    //Check if loading was right.
+    if(!done) return done;
+
+    //Common part of the code.
+    //Put the loaded image into the RPBPico
     fix_cartridge_checksums();
     write_buffer_set(0, 0);
     write_buffer_set(1, 1);
     setCurrectSector(2);
+
+    return done;
 }
 
 /**
@@ -437,8 +477,6 @@ bool load_mdv_cartridge(char const *file) {
         bufferPos += MPD_DATA_SIZE;
     }
 
-    //Load the loaded image into the RPBPico
-    loadMDx();
     return true;
 }
 
@@ -451,9 +489,7 @@ bool load_mpd_cartridge(char const *file) {
     UINT readSize = 0;
     if (pf_read(cartridge_image, CART_MPD_SIZE, &readSize) ||
        (readSize != CART_MPD_SIZE)) return false;
-    
-    //Load the leaded image into the RPBPico
-    loadMDx();
+
     return true;
 }
 
@@ -495,29 +531,48 @@ bool autoLoadFile(char const *fileName){
         if(nextFSEntry() != FR_OK || fno.fname[0] == 0){break;}
         //Comparing names of file pointed in FAT table and file name to load.
 		if(strcmp(fno.fname,fileName) == 0){
-           //TODO: IN_FOLDER is the State of 'select file', not sure if necessary
-           IN_FOLDER;
-           //Selected file, use the case to know its format and load it properly
+            //TODO: IN_FOLDER is the State of 'select file', not sure if necessary
+            //IN_FOLDER;
+            //Selected file, use the case to know its format and load it properly
             switch(fno.fsize){
 				case CART_MDV_SIZE:
 					crt_type = MDV;
-                    updatePath();        //HACE EL UPDATE PATH
-                    done = load_mdv_cartridge(fileName);
 					break;
 				case CART_MPD_SIZE:
 					crt_type = MPD;
-                    updatePath();        //HACE EL UPDATE PATH
-                    done = load_mpd_cartridge(fileName);
 					break;
 				default:
                     pf_readdir(&dir, NULL);
                     return false;
 					break;
 			}
+            //Update the path with the file once it was filtered & aproved
+            //updatePath(); //TODO: With last changes it seems useless. Test & remove it
+            done = true;
         }
     }
-
+    //Load the image if it was found and valid.
+    if(done) done = loadMDx();
     return done;
+}
+
+/**
+ * The function returns the type of the File System Entry pointed by the system at the moment of the call.
+ * Available types are: MDV, MDP, NONE, FOLD.
+ * @return File system entry type by the system.
+ */
+CARTRIDGE_FORMAT getFSType(){
+    switch(fno.fsize){
+        case CART_MDV_SIZE:
+            return MDV;
+            break;
+        case CART_MPD_SIZE:
+            return MPD;
+            break;
+        default:
+            return (IN_FOLDER)? FOLD:NONE;
+            break;
+	}
 }
 
 /**

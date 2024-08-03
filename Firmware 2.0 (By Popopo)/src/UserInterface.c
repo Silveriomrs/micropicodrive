@@ -5,17 +5,15 @@
  *
  * @Author: Dr. Gusman
  * @Author: Modified by Popopo
- * @Version: 1.2.2
- * @date: 07/07/2024
+ * @Version: 1.4.10
+ * @date: 16/07/2024
  */
 
 #include <string.h>
 #include <stdio.h>
 //TODO: Probar pues si quito no se queja
-#include "hardware/spi.h"
-#include "hardware/gpio.h"
-#include "EventMachine.h"
-//
+// #include "EventMachine.h"
+// //
 #include "UserInterface.h"
 #include "SharedBuffers.h"
 #include "SharedEvents.h"
@@ -53,14 +51,14 @@ void process_md_to_ui_event(void* event) {
             LED_ON(PIN_LED_READ);
             LED_OFF(PIN_LED_WRITE);
             break;
-        case MTU_MD_WRITTING:
+        case MTU_MD_WRITTING: //TODO: Alternative point that could be a nice place to direct writting function
             LED_ON(PIN_LED_WRITE);
             LED_OFF(PIN_LED_READ);
             break;
         case MTU_BUFFERSET_READ:
             process_md_read(evt->arg);
             break;
-        case MTU_BUFFERSET_WRITTEN:
+        case MTU_BUFFERSET_WRITTEN: //TODO: Here could be a nice place to direct writting function
             process_md_write(evt->arg);
             break;
     }
@@ -224,16 +222,7 @@ void process_user_interface(){
 			}
             break;
         case FILE_LOAD:
-			updatePath();
-			bool res = false;
-			switch(crt_type) {
-				case MDV: res = load_mdv_cartridge(currentPath); break;
-				case MPD: res = load_mpd_cartridge(currentPath); break;
-                default:
-                    break;
-			}
-				   
-			if(!res) {
+			if(!loadMDx()) {
 				showMSG(CART_ERR_LDING);
 				rewind_path();
 				show_file_name(fno.fname,IN_FOLDER);
@@ -258,17 +247,8 @@ void process_user_interface(){
 				event_push(&uiToMdEventQueue, &removeEvt);
 			} else if (BTN_PRESSED(PIN_BTN_SELECT)) {
 				showMSG(CART_SAVING);
-				bool res = false;
-				//TODO: de distinguir y guardar adecuadamente que se encargue IO.
-				switch(crt_type) {
-					case MDV: res = save_mdv_cartridge(currentPath); break;
-					//case IMG: res = save_img_cartridge(); break;
-					case MPD: res = save_mpd_cartridge(currentPath); break;
-                    default:
-                        break;
-				}
 				//Finally shows messages for save result & cart ready (whatever the result was)
-				if(res){ showMSG(CART_SAVED);}
+				if(saveMDx()){ showMSG(CART_SAVED);}
 				else { showMSG(CART_ERR_SAVING);}
 			} else if(BTN_PRESSED(PIN_BTN_NEXT)){
 				show_file_name(fno.fname,IN_FOLDER);

@@ -33,12 +33,13 @@
 
 /**
  * Define the format type of the image or file.
- * The types are {NONE,MDV,MPD}
+ * The types are {NONE,MDV,MPD,FOLD}
 */
 typedef enum{
     NONE,
     MDV,
-    MPD
+    MPD,
+    FOLD
 } CARTRIDGE_FORMAT;
 
 extern FATFS fatfs;
@@ -86,12 +87,14 @@ void process_md_write(uint8_t bufferSet);
 void fix_cartridge_checksums();
 bool save_mdv_cartridge(char const *file);
 bool save_mpd_cartridge(char const *file);
-void loadMDx();
+bool saveMDx();
+bool loadMDx();
 bool load_mdv_cartridge(char const *file);
 bool load_mpd_cartridge(char const *file);
 bool isFilePresent(char const *file);
 bool loadFile(char const *file, BYTE *buffDataIn, const UINT block, UINT *br);
 bool autoLoadFile(char const *fileName);
+CARTRIDGE_FORMAT getFSType();
 bool isSelectable();
 
 #endif

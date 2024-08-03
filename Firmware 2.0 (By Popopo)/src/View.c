@@ -65,7 +65,6 @@ void show_file_name(const char* fname, bool IN_FOLDER){
 /**
  * Shows the most common messages, after cleaning the screen.
  * @param MSG_TYPE any valid value from it.
- * @param ms Delay hold time (ms) the message before give back the control.
  */
 void showMSG(MSG_TYPE m){
 	// Reference of space for Screen mode 1	-> "12345678901" x 4 lines
