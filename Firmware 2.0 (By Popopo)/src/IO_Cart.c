@@ -294,7 +294,7 @@ void fix_cartridge_checksums(){
 
 //Save the cartridge to a mdv image
 bool save_mdv_cartridge(char const *file) {
-    if(pf_open(file) != FR_OK) return false;
+    //if(pf_open(file) != FR_OK) return false; //TODO: Borrar una vez comprobado
 
     UINT writeSize;
     uint8_t tmpByte;
@@ -380,7 +380,7 @@ bool save_mdv_cartridge(char const *file) {
 //Save the cartridge to a mpd image
 bool save_mpd_cartridge(char const *file) {
     //Open the file and based on return code, finish the operation or continue
-    if(pf_open(file) != FR_OK) return false;
+    //if(pf_open(file) != FR_OK) return false; //TODO: Borrar una vez comprobado
 
     UINT writeSize;
 
@@ -402,6 +402,9 @@ bool save_mpd_cartridge(char const *file) {
  */
 bool saveMDx(){
     bool done = false;
+    //Open the file and based on return code, finish the operation or continue
+    if(pf_open(currentPath) != FR_OK) return false;
+
     switch(crt_type) {
         case MDV: done = save_mdv_cartridge(currentPath); break;
         //case IMG: res = save_img_cartridge(); break;
@@ -484,7 +487,7 @@ bool load_mdv_cartridge(char const *file) {
  * @param char[] with the full name of the file.
  */
 bool load_mpd_cartridge(char const *file) {
-    // if (pf_open(file) != FR_OK) return false; 
+    // if (pf_open(file) != FR_OK) return false;  //TODO: Borrar una vez comprobado
     UINT readSize = 0;
     if (pf_read(cartridge_image, CART_MPD_SIZE, &readSize) ||
        (readSize != CART_MPD_SIZE)) return false;

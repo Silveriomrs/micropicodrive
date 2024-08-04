@@ -34,7 +34,7 @@ void show_file_name(const char* fname, bool IN_FOLDER){
 	if(IN_FOLDER ){
 		head = "[Dir]";
 	} else {
-		sprintf(type, "> %s", &fname[sz-3]);									//Get the type
+		sprintf(type, "> %s", &fname[sz-3]);								//Get the type
 		head = type;
 		//Get only the name when it's a file
 		memset(name, 0, sz);
