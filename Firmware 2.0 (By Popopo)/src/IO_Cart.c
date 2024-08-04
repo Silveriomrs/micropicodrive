@@ -3,9 +3,8 @@
  * This module is in charge of data flows and control over the cartridge and image format with the QL
  * From original work of Dr. Gusman.
  * @Author: Silverio MRS (Popopo)
- * @Version: 1.0
+ * @Version: 1.2
  */
-
 
 #include "IO_Cart.h"
 #include "SharedBuffers.h"
@@ -13,10 +12,7 @@
 #include "SharedEvents.h"
 #include "hardware/spi.h"
 #include "hardware/gpio.h"
-#include "EventMachine.h"
 //
-
-
 #define CONCAT(DEST, SOURCE) sprintf(&DEST[strlen(DEST)],"/%s", SOURCE)
 
 FATFS fatfs;
@@ -580,16 +576,4 @@ CARTRIDGE_FORMAT getFSType(){
  * It is useful to take desitions while browsing the FS, like ignore not valid formats or file types.
  * @return TRUE if it is a supported image format. Otherwise it returns FALSE.
  */
-bool isSelectable(){
-    bool done = false;
-    switch(fno.fsize){
-        case CART_MDV_SIZE:
-        case CART_MPD_SIZE:
-            done = true;
-            break;
-        default:
-            if(IN_FOLDER) done = true;
-            break;
-    }
-    return done;
-}
+bool isSelectable(){ return getFSType() != NONE; }

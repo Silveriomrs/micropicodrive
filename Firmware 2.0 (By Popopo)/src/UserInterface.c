@@ -5,15 +5,14 @@
  *
  * @Author: Dr. Gusman
  * @Author: Modified by Popopo
- * @Version: 1.4.10
- * @date: 16/07/2024
+ * @Version: 1.4.11
+ * @date: 04/08/2024
  */
 
 #include <string.h>
 #include <stdio.h>
-//TODO: Probar pues si quito no se queja
-// #include "EventMachine.h"
-// //
+#include "EventMachine.h"
+//
 #include "UserInterface.h"
 #include "SharedBuffers.h"
 #include "SharedEvents.h"
@@ -203,16 +202,15 @@ void process_user_interface(){
 			}
             break;
         case FILE_SELECTED:
-			switch(fno.fsize){
-				case CART_MDV_SIZE:
+			//Default initial case.
+			crt_type = getFSType();
+			uiState = FILE_LOAD;
+			switch(crt_type){
+				case MDV:
 					showMSG(LDING_MDV);
-					crt_type = MDV;
-					uiState = FILE_LOAD;
 					break;
-				case CART_MPD_SIZE:
+				case MPD:
 					showMSG(LDING_MDP);
-					crt_type = MPD;
-					uiState = FILE_LOAD;
 					break;
 				default:
 					showMSG(CART_FORMAT_UNK);
