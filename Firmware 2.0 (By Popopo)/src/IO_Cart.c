@@ -6,6 +6,7 @@
  * @Version: 1.2
  */
 
+
 #include "IO_Cart.h"
 #include "SharedBuffers.h"
 //Añadidos por añadir, porque realmente no parece que hagan nada
@@ -414,14 +415,16 @@ bool saveMDx(){
 
 
 /**
- * Common code to load_mdv_cartridge and load_mdp_cartridge.
- * It finishs the loading image of a MDV or MDP.
+ * The function loads a valid image from the storage system.
+ * It detects if the pointed file is a MDV or MDP image and loads calls to the right function to load it properly.
  * @return True if the operation was successful. False otherwise.
 */
 bool loadMDx(){
     bool done = false;
     //Update the path to the file.
     updatePath();
+    //Open the file and based on return code, finish the operation or continue
+    if (pf_open(currentPath) != FR_OK) return false;
     //Load the file considering its type.
     switch(crt_type) {
         case MDV: done = load_mdv_cartridge(currentPath); break;
@@ -450,14 +453,14 @@ bool loadMDx(){
  */
 bool load_mdv_cartridge(char const *file) {
     //Open the file and based on return code, finish the operation or continue
-    if(pf_open(file) != FR_OK) return false;
+    //if(pf_open(file) != FR_OK) return false; //TODO: Borrar una vez comprobado.
 
     UINT readSize = 0;
     int bufferPos = 0;
     int filePos;
 
     for(int buc = 0; buc < 255; buc++){
-        filePos = buc * MDV_SECTOR_SIZE + MDV_PREAMBLE_SIZE; //skip preamble
+        int filePos = buc * MDV_SECTOR_SIZE + MDV_PREAMBLE_SIZE; //skip preamble
         //The order is important due to process of evaluation and exucations of functions to get they resaults to evaluate themselves.
         if(pf_lseek(filePos) ||
          (pf_read(&cartridge_image[bufferPos], MDV_HEADER_SIZE, &readSize)) ||
@@ -481,7 +484,7 @@ bool load_mdv_cartridge(char const *file) {
  * @param char[] with the full name of the file.
  */
 bool load_mpd_cartridge(char const *file) {
-    if (pf_open(file) != FR_OK) return false;
+    // if (pf_open(file) != FR_OK) return false; 
     UINT readSize = 0;
     if (pf_read(cartridge_image, CART_MPD_SIZE, &readSize) ||
        (readSize != CART_MPD_SIZE)) return false;
