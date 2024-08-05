@@ -248,7 +248,7 @@ void process_user_interface(){
 				//Finally shows messages for save result & cart ready (whatever the result was)
 				if(saveMDx()){ showMSG(CART_SAVED);}
 				else { showMSG(CART_ERR_SAVING);}
-			} else if(BTN_PRESSED(PIN_BTN_NEXT)){
+			} else if(BTN_PRESSED(PIN_BTN_NEXT)){		//Now if pressed, it shows the selected file.
 				show_file_name(fno.fname,IN_FOLDER);
 				sleep_ms(1100);
 			}

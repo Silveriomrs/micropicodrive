@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include "EventMachine.h"
+// #include <stdio.h>           //TODO: Este lo carga en UserInterface.c
+// #include "EventMachine.h"    //TODO: Este lo carga en UserInterface.c
 #include "SharedBuffers.h"
 /*
 

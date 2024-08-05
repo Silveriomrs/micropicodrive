@@ -9,10 +9,10 @@
 
 #include "IO_Cart.h"
 #include "SharedBuffers.h"
-//Añadidos por añadir, porque realmente no parece que hagan nada
-#include "SharedEvents.h"
-#include "hardware/spi.h"
-#include "hardware/gpio.h"
+//TODO: Añadidos por añadir, porque realmente no parece que hagan nada al estar ya referenciados en otras partes.
+// #include "SharedEvents.h"  //TODO: Este lo carga en MicroDriveControl.c
+// #include "hardware/spi.h"  //TODO: Este lo carga en 
+// #include "hardware/gpio.h" //TODO: Este lo carga en MicroDriveControl.c
 //
 #define CONCAT(DEST, SOURCE) sprintf(&DEST[strlen(DEST)],"/%s", SOURCE)
 
@@ -526,8 +526,6 @@ bool autoLoadFile(char const *fileName){
         if(nextFSEntry() != FR_OK || fno.fname[0] == 0){break;}
         //Comparing names of file pointed in FAT table and file name to load.
 		if(strcmp(fno.fname,fileName) == 0){
-            //TODO: IN_FOLDER is the State of 'select file', not sure if necessary
-            //IN_FOLDER;
             //Selected file, use the case to know its format and load it properly
             switch(fno.fsize){
 				case CART_MDV_SIZE:

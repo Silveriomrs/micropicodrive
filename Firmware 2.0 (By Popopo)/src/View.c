@@ -30,14 +30,16 @@ void show_file_name(const char* fname, bool IN_FOLDER){
 	char *head;
 	int sz = strlen(fname);
 	char name[sz];
-	
+	memset(name, 0, sz);
+
 	if(IN_FOLDER ){
 		head = "[Dir]";
+		//Get the name for dir
+		memcpy(name, fname, sz);	//TODO: Algunas veces me muestra un char basura. Resolver. 
 	} else {
 		sprintf(type, "> %s", &fname[sz-3]);								//Get the type
 		head = type;
 		//Get only the name when it's a file
-		memset(name, 0, sz);
 		memcpy(name, fname, sz - 4);											
 	}
 
@@ -45,13 +47,13 @@ void show_file_name(const char* fname, bool IN_FOLDER){
     PRINT_STR(head, 0, 0, 1);
 
 	//Check if the name is too long for one line.
-    if(mode == 1 && strlen(fname) > 11) {									//If name with extension is longer than 11 chars, split it in two lines
+    if(mode == 1 && strlen(name) > 11) {									//If name with extension is longer than 11 chars, split it in two lines
         memset(auxName, 0, 12);
-        memcpy(auxName, fname, 8);											//Copy the name into the temporal string.
+        memcpy(auxName, name, 8);											//Copy the name into the temporal string.
         PRINT_STR(auxName, 0, 2, mode);										//Print the name at 2nd line.
-        sprintf(auxName, "       %s", &fname[8]);							//Compose the last line overwritting with spaces the name and leaving the extension.
+        sprintf(auxName, "       %s", &name[8]);							//Compose the last line overwritting with spaces the name and leaving the extension.
         PRINT_STR(auxName, 0, 3, mode);										//Print the extension at 3rd line of the screen.
-    } else if(mode == 1) {PRINT_STR(fname, 0, 2, mode);						//Otherwise it is printed compleately in line number 2 (screen).
+    } else if(mode == 1) {PRINT_STR(name, 0, 2, mode);						//Otherwise it is printed compleately in line number 2 (screen).
 	} else {
 		if(sz > 8) printHorizontalScroll(head,name,mode*8,140);  //TODO: Puede ser que deba valer 9, para evitar scroll por punto (letras(5) + punto(1) + ext(3))
 		CLR_SCR();
