@@ -69,17 +69,13 @@ void show_file_name(const char* fname, bool IN_FOLDER){
 void showMSG(MSG_TYPE m){
 	// Reference of space for Screen mode 1	-> "12345678901" x 4 lines
 	// Rerefence of space for Screen mode 2 -> "12345" x 4 lines with superposition. Last one incomplete
-	// char *msg1;
-	// char *msg2;
-	// char *msg3;
-	// int t = 0;
 
 	switch(m){
 		case WELCOME:
 			printVerticalScroll(" QL","","",110);
 			CLR_SCR();
 			PRINT_STR(" MPD", 0, 0, 2);
-			PRINT_STR("V0.10", 0, 2, 2);								//Development version RC10 11:00H 15/07/2024
+			PRINT_STR("V0.11", 0, 2, 2);	//Development version RC11 11:00H 05/08/2024
 			RENDER_SCR();
 			sleep_ms(0);
 			break;

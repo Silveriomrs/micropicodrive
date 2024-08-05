@@ -1,0 +1,3 @@
+10 a=RESPR(56188)
+11 LBYTES "mdv1_code",a
+12 CALL a
