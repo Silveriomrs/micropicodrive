@@ -339,7 +339,7 @@ bool loadDefault(){
 		event_push(&uiToMdEventQueue, &insertEvt);
 		showMSG(LDING_DEFAULT);
 		show_file_name(fno.fname,IN_FOLDER);
-		sleep_ms(2000);
+		sleep_ms(1500);
 	}else {
 		//Otherwise there is a mistake in CONFIG.CFG file.
 		showMSG(ERR_CFG);
