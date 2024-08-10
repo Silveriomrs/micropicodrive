@@ -40,7 +40,6 @@ No particular hardware needs for those images.
 
 This directory contains some others with files of many kinds to play around about converting them into MDV images, changing headers and so on.
 
-**Note: those dirs are placed there to check out how the browsing system of the MDPs is right, ignores not compatible files or contains bugs.**
 
 
 | Image | Ready? | Type | Overview |
