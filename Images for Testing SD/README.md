@@ -13,4 +13,32 @@ Also, for newbies there is a empty and formatted image that you can use (copy an
 
 I hope you are enjoying this beautiful solution. :)
 
+## Directory: Main
+No particular hardware needs for those images.
 
+
+| Image | Ready? | Type | Overview |
+| ------ | -- | -- | ---- |
+| ABACUS.MDV | Yes | Office |  |
+| ARCHIVE.MDV | No | Office | It needs header fix with MDTools |
+| EASEL.MDV | No | Office | It needs header fix with MDTools |
+| QUILL.mdv | No | Office | It needs header fix with MDTools |
+| Chess.mdv | Yes | Game |  |
+| pacman_patched | ? | Game |  |
+| Pitman.MDV | Yes | Game | Developed by Andrei |
+| Space Invaders(PD).mdv | Yes | Game |  |
+| MyBasic.mdv | Yes | Util | Basic cartridge with a Basic sample |
+| newcart.mdv | Yes | Util | Formatted MDV image for your use |
+| CONFIG.CFG | Yes | Util | Optional file required to customize the device |
+
+
+## Directory: Demos
+Some hardware requirements could be need. For example: Sound cards, expansion cards, memory expansion, new versions of the demos (due to it presented bugs in the time where they were published), etc. You should be aware of those matters and find the requirements/updates to play around with them.
+
+
+| Image | Ready? | Type | Overview |
+| ------ | -- | -- | ---- |
+|  |  | Demo |  |
+
+
+## Directory: More
