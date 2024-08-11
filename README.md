@@ -1,10 +1,14 @@
 # MicroPicoDrive
-## _An internal replacement for the Sinclair QL Microdrive without_
+ _An internal replacement for the Sinclair QL Microdrive_
+
+---
 
 UPDATE 10/08/2024
 
 > [!NOTE]
-> _This Fork is updating the information_
+> _This Fork is updating the information & its material_
+
+---
 
 This branch is for the new 1.4 version of the MicroPicoDrive.
 This version was created by Silverio MRS (AKA Popopo) from [Dr. Gusman's original version](https://github.com/gusmanb/micropicodrive).
@@ -74,17 +78,18 @@ It makes sense if the idea is to get chances of scalability and maintenance by t
 
 ## What is coming (TODO functionalities)
 
-Majority of users find the device functional and accomplish their expectations, however still it keeps some nice surprises to powering it up.
+Majority of users find the device functional and accomplish their expectations, however still it keeps some nice surprises to powering it up. **All of then can be activated optionally (_opt_)**.
 
 - **Software/firmware**
-- [x] Config file to customize preferences (optional).
-- [x] New screen modes with bigger fonts (optional).
+- [x] Config file to customize preferences (opt).
+- [x] New screen modes with bigger fonts (opt).
+- [x] Capability of defining a default image to load when turning on the QL or inserting the cartridge (opt).
 - [ ] Direct writing (optional).
 - [ ] Direct control from the QL OS over the storage system (mSD).
 - **Hardware**
-- [ ] Sound emulation of the motor (WiP) (optional).
-- [ ] MIDI player (WiP) (optional).
-- [ ] Bluetooth cartridge and its APP to load images from other devices (PC, Phone, Tablet...) (optional).
+- [ ] Sound emulation of the motor (WiP) (opt).
+- [ ] MIDI player (WiP) (opt).
+- [ ] Bluetooth cartridge and its APP to load images from other devices (PC, Phone, Tablet...) (opt).
 
 
 ### Some extra add-ons that could come
