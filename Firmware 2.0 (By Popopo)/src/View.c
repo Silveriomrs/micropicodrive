@@ -106,6 +106,9 @@ void showMSG(MSG_TYPE m){
 			PRINT_STR("Dir", 3/mode, 2, 2);
 			RENDER_SCR();
 			break;
+		case NO_MORE_FILES:
+			printHorizontalScroll("","No more files in the directory",5,170);
+			break;
 		case CART_FORMAT_UNK:
 			if(mode==1) printMSG("Unknown","cartridge","format.",4000);
 			else printHorizontalScroll("UNK","cartridge format",8*mode,140);
@@ -139,7 +142,7 @@ void showMSG(MSG_TYPE m){
 			if(mode==1)printMSG("Loading MPD","cartridge..","",0);
 			else printHorizontalScroll("LOAD","loading MPD cartridge",8*mode,120);
 			break;
-		case LDING_DEFAULT: 
+		case LDING_DEFAULT:
 			printHorizontalScroll("","default file",5,110);
 			break;
 		case ERR_CFG:

@@ -5,8 +5,8 @@
  *
  * @Author: Dr. Gusman
  * @Author: Modified by Popopo
- * @Version: 1.4.11
- * @date: 04/08/2024
+ * @Version: 1.4.12
+ * @date: 12/08/2024
  */
 
 #include <string.h>
@@ -71,7 +71,16 @@ void process_md_to_ui_event(void* event) {
  */
 FRESULT nextEntry(){
 	FRESULT res = nextFSEntry();
-	if (res == FR_OK && isSelectable()) show_file_name(fno.fname,IN_FOLDER);
+	//Firsly check if there is a entry and if it is not null (what means there is not another file).
+	if( res == FR_OK && fno.fname[0] == 0) {
+		//Not valid one, it is null reference due to last file in the table.
+		//So do nothing.
+		showMSG(NO_MORE_FILES);
+	}else if (res == FR_OK && isSelectable()){
+		//If it is an valid file then show the name too.
+		show_file_name(fno.fname,IN_FOLDER);
+	}
+	
 	return res;
 }
 
@@ -83,12 +92,17 @@ FRESULT nextEntry(){
  * @param button The button to apply debounce.
  */
 void debounce_button(uint button) {
+	FRESULT res;
     while(BTN_PRESSED(button)){ 
 		sleep_ms(20); 
 		//When the button is 'Next', it skip the entry and goes to the next one after a holding time (retard).
 		if(button == PIN_BTN_NEXT ){
-			sleep_ms(200); 
-			if(BTN_PRESSED(button)) nextEntry();		
+			sleep_ms(200);
+			//If it continues pressed then read the next FS entry.
+			if(BTN_PRESSED(button) && res != FR_NO_FILE) {
+				//Just in case there are not more files, ignore next reading till debounce it.
+				res = nextEntry();
+			}
 		} 
 	}
     sleep_ms(200);

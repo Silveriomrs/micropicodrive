@@ -1,7 +1,7 @@
 /**
  * Implementation of the module for R/W operations between the RBP Pico and the cartridge.
  * This module is in charge of data flows and control over the cartridge and image format with the QL
- * From original work of Dr. Gusman.
+ * From Dr. Gusman's original work.
  * @Author: Silverio MRS (Popopo)
  * @Version: 1.2
  */
