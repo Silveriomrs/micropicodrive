@@ -38,6 +38,7 @@ All those belongs to PSION suit. All of them work properly in a stock QL with MD
 
 | Image | Ready? | Type | Overview |
 | ------ | :--: | :--: | ---- |
+| ABACUS.MDV | Yes | Office | Developed by PSION software |
 | ARCHIVE.MDV | Yes | Office | Developed by PSION software |
 | EASEL.MDV | Yes | Office | Developed by PSION software |
 | QUILL.MDV | Yes | Office | Developed by PSION software |
