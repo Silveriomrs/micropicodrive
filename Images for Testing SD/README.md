@@ -22,17 +22,37 @@ No particular hardware needs for those images.
 
 | Image | Ready? | Type | Overview |
 | ------ | :--: | :--: | ---- |
-| ABACUS.MDV | Yes | Office |  |
-| ARCHIVE.MDV | No | Office | It needs header fix with MDTools |
-| EASEL.MDV | No | Office | It needs header fix with MDTools |
-| QUILL.mdv | No | Office | It needs header fix with MDTools |
+| ABACUS.MDV | Yes | Office | Developed by PSION software |
 | Chess.mdv | Yes | Game |  |
-| pacman_patched | ? | Game |  |
+| pacman_patched | No | Game | The image has not right checksum |
 | Pitman.MDV | Yes | Game | Developed by Andrei |
 | Space Invaders(PD).mdv | Yes | Game |  |
 | MyBasic.mdv | Yes | Util | Basic cartridge with a Basic sample |
 | newcart.mdv | Yes | Util | Formatted MDV image for your use |
 | **CONFIG.CFG** | Yes | Util | _Optional file_ **required to customize the device** |
+
+
+## Directory: PSION_4
+All those belongs to PSION suit. All of them work properly in a stock QL with MDPs. They have the headers 'fixed' with the data attribute saved. They could serve like comparation with the structure image with their twins into the Fail folder.
+
+
+| Image | Ready? | Type | Overview |
+| ------ | :--: | :--: | ---- |
+| ARCHIVE.MDV | Yes | Office | Developed by PSION software |
+| EASEL.MDV | Yes | Office | Developed by PSION software |
+| QUILL.MDV | Yes | Office | Developed by PSION software |
+
+
+## Directory: FAIL
+All those belongs to PSION suit. Those images are to test and play around with convertir MDVs subformats and doesn't work without 'fix' them. Specially to use Dr. Gusman tools or Johan Engdhal's tool. 
+
+
+| Image | Ready? | Type | Overview |
+| ------ | :--: | :--: | ---- |
+| ARCHIVE.MDV | No | Office | Developed by PSION software |
+| EASEL.MDV | No | Office | Developed by PSION software |
+| QUILL.MDV | No | Office | Developed by PSION software |
+
 
 
 ## Directory: Demos
@@ -48,7 +68,7 @@ This directory contains some others with files of many kinds to play around abou
 | smfxteam.mdv | ? | Demo | Sound card/Specific ROM? |
 | qldrive11 | X | Dir | Multiple files for testing |
 | war | X | Dir | Multiple files for testing |
-
+| WB21_tk2.MDV | yes | Demo | Amiga Workbench demo. Requires memory expansion and TK2 |
 
 **Directories qldrive11 & war**
 
@@ -57,3 +77,5 @@ Those directories contains files of a vary of types in order to play around, and
 > [!NOTE]
 > Those dirs are placed here to check out how the browsing system of the MDPs is right, ignores not compatible files or contains bugs. So its purpose is not to be loaded into a real QL.
 
+## Directory: more
+This folder contain some legacy images from original project (Dr. Gusman's github). Not a specific role yet.
