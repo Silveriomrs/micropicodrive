@@ -5,8 +5,8 @@
  *
  * @Author: Dr. Gusman
  * @Author: Modified by Popopo
- * @Version: 1.4.12
- * @date: 12/08/2024
+ * @Version: 1.4.2
+ * @date: 05/12/2024
  */
 
 #include <string.h>
@@ -29,6 +29,7 @@ USER_INTERFACE_STATE uiState = IDLE;
 USER_INTERFACE_STATE uiNextState;
 
 uint64_t delayEnd;
+bool FirstBoot = true;										//Flag to detect if the MDP is booted by first time or not. That is important to define the behaviour.
 
 //Process events from the MD control
 void process_md_to_ui_event(void* event) {
@@ -170,30 +171,31 @@ void process_user_interface(){
 			if(mountFS() == FR_OK) {   									//Checks if the FS is mounted.
 				if(crt_type == NONE) uiState = OPEN_FOLDER;				//Is a cartridge formated inserted?, then open the directory (root or sub-directory)
 				else {uiState = CARTRIDGE_READY;}
-				//Try to load default image.
-				loadDefault();
 			}else {showMSG(SD_WAIT);}
             break;
         case OPEN_FOLDER:
 			if( openDIR() != FR_OK) {
 				showMSG(FOLDER_ERR_OPEN);
 				uiState = WAITING_SD_CARD;
+			} else if (FirstBoot) {
+				loadDefault();  										//Try to load default image.
+				FirstBoot = false;
 			} else {
 				firstFolderEntry = true;
 				uiState = READ_FOLDER_ENTRY;
-			}
+			} 
             break;
         case READ_FOLDER_ENTRY:
 			if(IS_CART_OUT()){
 				uiState = IDLE;
 			} else if (nextEntry() != FR_OK){
 				showMSG(FOLDER_ERR_READ);
-				uiState = WAITING_SD_CARD;		
+				uiState = WAITING_SD_CARD;
 			} else if(fno.fname[0] == 0) {
 				if(firstFolderEntry) {
 					showMSG(FOLDER_EPTY);
 					uiState = SELECT_FILE;
-				}else { uiState = OPEN_FOLDER; }
+				} else { uiState = OPEN_FOLDER; }
 			} else if(isSelectable()){
 				firstFolderEntry = false;
 				uiState = SELECT_FILE;
@@ -315,8 +317,6 @@ char* spliter(char *text, const char *filter){
  * @return True if the operation was successful. Otherwise it returns false.
 */
 bool loadDefault(){
-	//Open root directory
-	if(openDIR() != FR_OK) {return false;}
 	//Direct checking about Config file on the root directory.
 	if(!isFilePresent("CONFIG.CFG")) {return false;}
 	
@@ -340,17 +340,23 @@ bool loadDefault(){
 	strcpy(ctext,(char *)buffData);
     scrm = spliter((char*)ctext,"SCRM");
 	setSCRM(scrm);
-	//Try to load the file.
-	done = autoLoadFile(fileName);
-	//Sets state machine as poinng a file in a non empty directory
-	firstFolderEntry = false;
-	
+	//Try to load the file if it is the first load
+	//TODO: pasar esto a IO_Cart
+	//done = (FirstBoot == true)? autoLoadFile(fileName) : false;
+	if(!isFilePresent(fileName)) {return false;}
+    //Start searching.
+    while(!done){
+        if(nextFSEntry() != FR_OK || fno.fname[0] == 0){break;}
+        //Comparing names of file pointed in FAT table and file name to load.
+		if(strcmp(fno.fname,fileName) == 0){
+			uiState = FILE_SELECTED;
+            done = true;
+        }
+    }
+
+	//TODO: Esta parte, adelgazarla. No es necesaria tan grande. Basta de mensajes tan redundantes.
 	//Status & event setting for loaded file (selected file).
 	if(done) {
-		uiState = CARTRIDGE_READY;
-		utmevent_t insertEvt;
-		insertEvt.event = UTM_CARTRIDGE_INSERTED;
-		event_push(&uiToMdEventQueue, &insertEvt);
 		showMSG(LDING_DEFAULT);
 		show_file_name(fno.fname,IN_FOLDER);
 		sleep_ms(1500);

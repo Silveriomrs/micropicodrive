@@ -77,7 +77,7 @@ void showMSG(MSG_TYPE m){
 			printVerticalScroll(" QL","","",110);
 			CLR_SCR();
 			PRINT_STR(" MPD", 0, 0, 2);
-			PRINT_STR("V0.11", 0, 2, 2);	//Development version RC11 11:00H 05/08/2024
+			PRINT_STR("V0.12", 0, 2, 2);	//Development version RC11 11:00H 05/08/2024
 			RENDER_SCR();
 			sleep_ms(0);
 			break;
@@ -146,7 +146,7 @@ void showMSG(MSG_TYPE m){
 			printHorizontalScroll("","default file",5,110);
 			break;
 		case ERR_CFG:
-			if(mode==1)printMSG("Error","CONFIG.CFG","",3000);
+			if(mode==1)printMSG("Error","CONFIG.CFG","",2000);
 			else printHorizontalScroll("ERROR","Config.cfg file",8*mode,90);
 			break;
 	}

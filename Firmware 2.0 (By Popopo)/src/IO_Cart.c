@@ -32,10 +32,10 @@ char currentPath[PATH_BUFFER_SIZE];
 
 //Remove from the path buffer the last entry
 void rewind_path(){
-    if(strlen(currentPath) == 0) return;
-    char* lastPos = strrchr(currentPath, '/');
-    if(lastPos == NULL) return;
-    memset(lastPos, 0, (size_t)(PATH_BUFFER_SIZE - (lastPos - currentPath)));
+    if(strlen(currentPath) == 0) return;                                        //When there are not any dir/subdir or file selected.
+    char* lastPos = strrchr(currentPath, '/');                                  //Find last position of char '/' (dir separator)
+    if(lastPos == NULL) return;                                                 //Is there is not in the path => root directory, then return null.
+    memset(lastPos, 0, (size_t)(PATH_BUFFER_SIZE - (lastPos - currentPath)));   //Substract the file name from the path ('/' char included)=> go to entry 0 of actual directory.
 }
 
 /**
@@ -507,6 +507,7 @@ bool isFilePresent(char const *file){return (pf_open(file) == FR_OK);}
 */
 bool loadFile(char const *file, BYTE *buffDataIn, const UINT block, UINT *br){ return (pf_read(buffDataIn, block, br) != FR_OK);}
 
+//TODO: DELETE this function once is not needed it.
 /**
  * This function load a file from storage device.
  *  To do this job, it start checking if the file exist, in case that is present in the storage system,
@@ -519,31 +520,7 @@ bool loadFile(char const *file, BYTE *buffDataIn, const UINT block, UINT *br){ r
 */
 bool autoLoadFile(char const *fileName){
     bool done = false;
-    if(!isFilePresent(fileName)) {return false;}
-    pf_readdir(&dir, NULL);
-    //Start searching.
-    while(!done){
-        if(nextFSEntry() != FR_OK || fno.fname[0] == 0){break;}
-        //Comparing names of file pointed in FAT table and file name to load.
-		if(strcmp(fno.fname,fileName) == 0){
-            //Selected file, use the case to know its format and load it properly
-            switch(fno.fsize){
-				case CART_MDV_SIZE:
-					crt_type = MDV;
-					break;
-				case CART_MPD_SIZE:
-					crt_type = MPD;
-					break;
-				default:
-                    pf_readdir(&dir, NULL);
-                    return false;
-					break;
-			}
-            done = true;
-        }
-    }
-    //Load the image if it was found and valid.
-    if(done) done = loadMDx();
+
     return done;
 }
 
