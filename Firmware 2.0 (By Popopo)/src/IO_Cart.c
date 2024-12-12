@@ -507,7 +507,6 @@ bool isFilePresent(char const *file){return (pf_open(file) == FR_OK);}
 */
 bool loadFile(char const *file, BYTE *buffDataIn, const UINT block, UINT *br){ return (pf_read(buffDataIn, block, br) != FR_OK);}
 
-//TODO: DELETE this function once is not needed it.
 /**
  * This function load a file from storage device.
  *  To do this job, it start checking if the file exist, in case that is present in the storage system,
@@ -520,7 +519,15 @@ bool loadFile(char const *file, BYTE *buffDataIn, const UINT block, UINT *br){ r
 */
 bool autoLoadFile(char const *fileName){
     bool done = false;
-
+	if(!isFilePresent(fileName)) {return false;}
+    //Start searching.
+    while(!done){
+        if(nextFSEntry() != FR_OK || fno.fname[0] == 0){break;}
+        //Comparing names of file pointed in FAT table and file name to load.
+		if(strcmp(fno.fname,fileName) == 0){
+			done = true;
+        }
+    }
     return done;
 }
 

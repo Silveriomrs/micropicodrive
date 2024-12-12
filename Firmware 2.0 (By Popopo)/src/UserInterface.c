@@ -341,29 +341,17 @@ bool loadDefault(){
     scrm = spliter((char*)ctext,"SCRM");
 	setSCRM(scrm);
 	//Try to load the file if it is the first load
-	//TODO: pasar esto a IO_Cart
-	//done = (FirstBoot == true)? autoLoadFile(fileName) : false;
-	if(!isFilePresent(fileName)) {return false;}
-    //Start searching.
-    while(!done){
-        if(nextFSEntry() != FR_OK || fno.fname[0] == 0){break;}
-        //Comparing names of file pointed in FAT table and file name to load.
-		if(strcmp(fno.fname,fileName) == 0){
-			uiState = FILE_SELECTED;
-            done = true;
-        }
-    }
+	done = (FirstBoot == true)? autoLoadFile(fileName) : false;
 
-	//TODO: Esta parte, adelgazarla. No es necesaria tan grande. Basta de mensajes tan redundantes.
 	//Status & event setting for loaded file (selected file).
 	if(done) {
+		uiState = FILE_SELECTED;
 		showMSG(LDING_DEFAULT);
-		show_file_name(fno.fname,IN_FOLDER);
-		sleep_ms(1500);
-	}else {
+	} else {
 		//Otherwise there is a mistake in CONFIG.CFG file.
+		firstFolderEntry = true;
+		uiState = READ_FOLDER_ENTRY;
 		showMSG(ERR_CFG);
-		uiState = OPEN_FOLDER;
 	}
 
 	return done;
