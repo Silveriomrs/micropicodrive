@@ -35,7 +35,7 @@ void show_file_name(const char* fname, bool IN_FOLDER){
 	if(IN_FOLDER ){
 		head = "[Dir]";
 		//Get the name for dir
-		memcpy(name, fname, sz);	//TODO: Algunas veces me muestra un char basura. Resolver. 
+		memcpy(name, fname, sz+1);
 	} else {
 		sprintf(type, "> %s", &fname[sz-3]);								//Get the type
 		head = type;
@@ -55,7 +55,7 @@ void show_file_name(const char* fname, bool IN_FOLDER){
         PRINT_STR(auxName, 0, 3, mode);										//Print the extension at 3rd line of the screen.
     } else if(mode == 1) {PRINT_STR(name, 0, 2, mode);						//Otherwise it is printed compleately in line number 2 (screen).
 	} else {
-		if(sz > 8) printHorizontalScroll(head,name,mode*8,140);  //TODO: Puede ser que deba valer 9, para evitar scroll por punto (letras(5) + punto(1) + ext(3))
+		if(sz > 8) printHorizontalScroll(head,name,mode*8,140);
 		CLR_SCR();
 		PRINT_STR(head,0,0,mode);
 		PRINT_STR(name,0,2,mode);

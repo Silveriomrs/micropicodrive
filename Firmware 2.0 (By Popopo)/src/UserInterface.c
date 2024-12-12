@@ -179,7 +179,6 @@ void process_user_interface(){
 				uiState = WAITING_SD_CARD;
 			} else if (FirstBoot) {
 				loadDefault();  										//Try to load default image.
-				FirstBoot = false;
 			} else {
 				firstFolderEntry = true;
 				uiState = READ_FOLDER_ENTRY;
@@ -354,6 +353,7 @@ bool loadDefault(){
 		showMSG(ERR_CFG);
 	}
 
+	FirstBoot = false;
 	return done;
 }
 
