@@ -77,7 +77,7 @@ void showMSG(MSG_TYPE m){
 			printVerticalScroll(" QL","","",110);
 			CLR_SCR();
 			PRINT_STR(" MPD", 0, 0, 2);
-			PRINT_STR("V0.12", 0, 2, 2);	//Development version RC11 11:00H 05/08/2024
+			PRINT_STR("V0.13", 0, 2, 2);	//Development version RC11 11:00H 05/08/2024
 			RENDER_SCR();
 			sleep_ms(0);
 			break;

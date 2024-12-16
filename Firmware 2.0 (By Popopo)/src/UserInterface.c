@@ -6,7 +6,7 @@
  * @Author: Dr. Gusman
  * @Author: Modified by Popopo
  * @Version: 1.4.2
- * @date: 05/12/2024
+ * @date: 16/12/2024
  */
 
 #include <string.h>
@@ -316,44 +316,57 @@ char* spliter(char *text, const char *filter){
  * @return True if the operation was successful. Otherwise it returns false.
 */
 bool loadDefault(){
+	//Be aware, if it is not present a infinite blucle would start.
+	FirstBoot = false;
+
 	//Direct checking about Config file on the root directory.
-	if(!isFilePresent("CONFIG.CFG")) {return false;}
+	if(!isFilePresent("CONFIG.CFG")) {
+		return false;
+	}
 	
 	//For filename
 	UINT block = 512;					// Number of items to read, the whole sector. That's fine even with EOF
 	UINT br = 0;						// Counter of read items.
 	BYTE buffData[block];				// Buffer to store read datas.
 	//Read the file.
-	bool done = loadFile("CONFIG.CFG",buffData,block,&br);
-
+	bool done = false;
+	bool isLoaded = false;				//Flag if there is a defined image for loading and the process was successful
+	bool isErr = false;					//Flag for any error in Config file.
 	// Vars to hold data & info
 	char* fileName;
-	char* scrm;                
-	//Create a copy of original text, for second Operator.
-	char ctext[strlen((char *)buffData)+1];
-    strcpy(ctext,(char *)buffData);
+	char* scrm;  
+	
+	//Read the file
+	done = loadFile("CONFIG.CFG",buffData,block,&br);
+	//Extract the parameters values from the Config file.
+	if(done){
+		//Create a copy of original text, for second Operator.
+		char ctext[strlen((char *)buffData)+1];
+		strcpy(ctext,(char *)buffData);
 
-    //Find value for operator FILE (Default file).
-	fileName = spliter((char*)ctext,"FILE");
-	//Copy again the buffer & Find value for operator SCRM (Screen mode)
-	strcpy(ctext,(char *)buffData);
-    scrm = spliter((char*)ctext,"SCRM");
-	setSCRM(scrm);
-	//Try to load the file if it is the first load
-	done = (FirstBoot == true)? autoLoadFile(fileName) : false;
+		//Find value for operator FILE (Default file).
+		fileName = spliter((char*)ctext,"FILE");
 
-	//Status & event setting for loaded file (selected file).
-	if(done) {
-		uiState = FILE_SELECTED;
-		showMSG(LDING_DEFAULT);
-	} else {
-		//Otherwise there is a mistake in CONFIG.CFG file.
-		firstFolderEntry = true;
-		uiState = READ_FOLDER_ENTRY;
-		showMSG(ERR_CFG);
+		//Try to load the file when defined in config.
+		if(fileName != NULL){ isLoaded = autoLoadFile(fileName);}
+		//It must occurr when trying to load bug something went wrong (ie. no file found)
+		if(fileName != NULL && isLoaded == false) { isErr = true; }												
+
+		//Copy again the buffer & Find value for operator SCRM (Screen mode)
+		strcpy(ctext,(char *)buffData);
+		scrm = spliter((char*)ctext,"SCRM");
+		setSCRM(scrm);
 	}
 
-	FirstBoot = false;
+	//Status & event setting for loaded file (selected file).
+	if(isLoaded) {
+		uiState = FILE_SELECTED;
+	} else {
+		//Otherwise there is a mistake in CONFIG.CFG file.
+		uiState = READ_FOLDER_ENTRY;
+		if(isErr) (showMSG(ERR_CFG));
+	}
+
 	return done;
 }
 

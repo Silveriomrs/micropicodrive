@@ -505,7 +505,7 @@ bool isFilePresent(char const *file){return (pf_open(file) == FR_OK);}
  * @param br returned number of items read from the file.
  * @return TRUE if operation was compleated. Otherwise FALSE.
 */
-bool loadFile(char const *file, BYTE *buffDataIn, const UINT block, UINT *br){ return (pf_read(buffDataIn, block, br) != FR_OK);}
+bool loadFile(char const *file, BYTE *buffDataIn, const UINT block, UINT *br){ return (pf_read(buffDataIn, block, br) == FR_OK);}
 
 /**
  * This function load a file from storage device.
