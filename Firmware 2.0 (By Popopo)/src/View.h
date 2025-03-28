@@ -2,25 +2,28 @@
 * This module manage the View/GUI between RBPi Pico and the oLED Screen of 0.49" and LEDs Behavior.
 * @Author: Original work from Dr. Gusman project.
 * @Author: Silverio MRS (Popopo)
-* @Version: 1.0
+* @Version: 1.0.2
 */
 
 #ifndef _VIEW_
 #define _VIEW_
-#include "pff/pff.h"
+// #include "pff/pff.h"  //TODO: Delete me if all is fine after a time of testing.
 #include <string.h>
 #include <stdio.h>
 #include "ssd1306/ssd1306.h"
 
 //LEDs Pins output
-#define PIN_LED_PWR 25		/** Power LED RPB Pico */
-#define PIN_LED_SELECT 9	/** LED unit selected */
-#define PIN_LED_READ 11		/** LED unit in reading state */
-#define PIN_LED_WRITE 10	/** LED unit in writing state */
+#define LED_PWR 25		/** Power LED RPB Pico */
+#define LED_SELECT 9	/** LED unit selected */
+#define LED_READ 11		/** LED unit in reading state */
+#define LED_WRITE 10	/** LED unit in writing state */
 //Screen and SDCart pins.
 #define I2C_PORT i2c0
 #define I2C_SDA 20
 #define I2C_SCL 21
+//Functions for managing the LED states
+#define SET_LED_ON(LED) gpio_put(LED, true)		/** Set the indicated Led ON */
+#define SET_LED_OFF(LED) gpio_put(LED, false)	/** Set the indicated Led OFF */
 
 //Types of messages
 typedef enum{
@@ -46,7 +49,7 @@ typedef enum{
 
 bool init_screen();
 bool init_gui();
-void setSCRM(char* scrm);
+void setSCRM(const char* scrm);
 void show_file_name(const char* fname, bool IN_FOLDER);
 void showMSG(MSG_TYPE m);
 void printMSG(const char* msg1, const char* msg2, const char* msg3, int time);

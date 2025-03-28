@@ -3,15 +3,14 @@
  * This module is in charge of data flows and control over the cartridge and image format with the QL
  * From Dr. Gusman's original work.
  * @Author: Silverio MRS (Popopo)
- * @Version: 1.2
+ * @Version: 1.2.2
  */
 
 
 #include "IO_Cart.h"
 #include "SharedBuffers.h"
 //TODO: Añadidos por añadir, porque realmente no parece que hagan nada al estar ya referenciados en otras partes.
-// #include "SharedEvents.h"  //TODO: Este lo carga en MicroDriveControl.c
-// #include "hardware/spi.h"  //TODO: Este lo carga en 
+#include "hardware/spi.h"  //FIXME: Este lo carga en ?????? buscar
 // #include "hardware/gpio.h" //TODO: Este lo carga en MicroDriveControl.c
 //
 #define CONCAT(DEST, SOURCE) sprintf(&DEST[strlen(DEST)],"/%s", SOURCE)

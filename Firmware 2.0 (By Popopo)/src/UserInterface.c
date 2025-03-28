@@ -5,8 +5,8 @@
  *
  * @Author: Dr. Gusman
  * @Author: Modified by Popopo
- * @Version: 1.4.2
- * @date: 16/12/2024
+ * @Version: 1.4.3
+ * @date: 21/02/2025
  */
 
 #include <string.h>
@@ -19,9 +19,6 @@
 #include "View.h"
 #include "IO_Cart.h"
 //
-
-#define LED_ON(LED) gpio_put(LED, true)
-#define LED_OFF(LED) gpio_put(LED, false)
 #define IS_CART_OUT() gpio_get(PIN_UI_DETECT)				//Detect Cartridge disconected. TRUE if disconected, FALSE in other case
 #define BTN_PRESSED(BUTTON) (!gpio_get(BUTTON))				//Detect Button pressed. TRUE if pressed, FALSE in other case
 
@@ -39,26 +36,26 @@ void process_md_to_ui_event(void* event) {
         case MTU_MD_DESELECTED:
             mdInUse = false;
             setInFormat(false);
-            LED_OFF(PIN_LED_SELECT);
-            LED_OFF(PIN_LED_READ);
-            LED_OFF(PIN_LED_WRITE);
+            SET_LED_OFF(LED_SELECT);
+            SET_LED_OFF(LED_READ);
+            SET_LED_OFF(LED_WRITE);
             break;
         case MTU_MD_SELECTED:
             mdInUse = true;
-            LED_ON(PIN_LED_SELECT);
+            SET_LED_ON(LED_SELECT);
             break;
         case MTU_MD_READING:
-            LED_ON(PIN_LED_READ);
-            LED_OFF(PIN_LED_WRITE);
+            SET_LED_ON(LED_READ);
+            SET_LED_OFF(LED_WRITE);
             break;
         case MTU_MD_WRITTING: //TODO: Alternative point that could be a nice place to direct writting function
-            LED_ON(PIN_LED_WRITE);
-            LED_OFF(PIN_LED_READ);
+            SET_LED_ON(LED_WRITE);
+            SET_LED_OFF(LED_READ);
             break;
         case MTU_BUFFERSET_READ:
             process_md_read(evt->arg);
             break;
-        case MTU_BUFFERSET_WRITTEN: //TODO: Here could be a nice place to direct writting function
+        case MTU_BUFFERSET_WRITTEN: //TODO: Here could be a nice place to direct writting function too
             process_md_write(evt->arg);
             break;
     }
@@ -117,7 +114,7 @@ void check_cancel(){
         uiState = OPEN_FOLDER;
         crt_type = NONE;
         utmevent_t removeEvt;
-        setCurrectSector(0);
+        setCurrectSector(0);  // The only difference with script into the press button function in process_user_interface function.
         removeEvt.event = UTM_CARTRIDGE_REMOVED;
         event_push(&uiToMdEventQueue, &removeEvt);
     }
@@ -154,17 +151,17 @@ void process_user_interface(){
             if(!IS_CART_OUT()) {program_delay(2000, INIT_SCREEN);}
 			else {
 				sleep_ms(500);
-				gpio_put(PIN_LED_PWR, !gpio_get(PIN_LED_PWR));
+				gpio_put(LED_PWR, !gpio_get(LED_PWR));
 			}
 			break;
         case DELAY:
-			if(check_delay()) LED_ON(PIN_LED_PWR);
+			if(check_delay()) SET_LED_ON(LED_PWR);
 		    break;
         case INIT_SCREEN:												//Initialize the display and check if mSD is inserted.	
             if(init_screen()){
 				showMSG(WELCOME);
-				program_delay(2000, WAITING_SD_CARD);
 				if(crt_type == NONE) memset(currentPath, 0, PATH_BUFFER_SIZE);
+				program_delay(2000, WAITING_SD_CARD);
 			} 
             break;
         case WAITING_SD_CARD:
@@ -185,9 +182,7 @@ void process_user_interface(){
 			} 
             break;
         case READ_FOLDER_ENTRY:
-			if(IS_CART_OUT()){
-				uiState = IDLE;
-			} else if (nextEntry() != FR_OK){
+			if (nextEntry() != FR_OK){
 				showMSG(FOLDER_ERR_READ);
 				uiState = WAITING_SD_CARD;
 			} else if(fno.fname[0] == 0) {
@@ -211,9 +206,7 @@ void process_user_interface(){
 				debounce_button(PIN_BTN_NEXT);
 				uiState = READ_FOLDER_ENTRY;
 			} else if(BTN_PRESSED(PIN_BTN_BACK)) {
-				debounce_button(PIN_BTN_BACK);
-				rewind_path();
-				uiState = OPEN_FOLDER;
+				check_cancel();
 			}
             break;
         case FILE_SELECTED:
@@ -251,13 +244,7 @@ void process_user_interface(){
         case CARTRIDGE_READY:
 			showMSG(CART_RDY);
 			if(BTN_PRESSED(PIN_BTN_BACK)) {
-				debounce_button(PIN_BTN_BACK);
-				rewind_path();
-				uiState = OPEN_FOLDER;
-				crt_type = NONE;
-				utmevent_t removeEvt;
-				removeEvt.event = UTM_CARTRIDGE_REMOVED;
-				event_push(&uiToMdEventQueue, &removeEvt);
+				check_cancel();
 			} else if (BTN_PRESSED(PIN_BTN_SELECT)) {
 				showMSG(CART_SAVING);
 				//Finally shows messages for save result & cart ready (whatever the result was)
@@ -320,9 +307,7 @@ bool loadDefault(){
 	FirstBoot = false;
 
 	//Direct checking about Config file on the root directory.
-	if(!isFilePresent("CONFIG.CFG")) {
-		return false;
-	}
+	if(!isFilePresent("CONFIG.CFG")) {return false;}
 	
 	//For filename
 	UINT block = 512;					// Number of items to read, the whole sector. That's fine even with EOF

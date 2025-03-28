@@ -42,13 +42,14 @@ typedef enum{
     FOLD
 } CARTRIDGE_FORMAT;
 
-extern FATFS fatfs;
-extern DIR dir;
-extern FILINFO fno;      // Struct with the attrs of the file.
-extern CARTRIDGE_FORMAT crt_type;
-extern bool mdInUse;
-extern bool firstFolderEntry;
-extern char currentPath[PATH_BUFFER_SIZE];
+//TODO: After testing it, the following lines were Externed. Extern variables may not be neccesary at all here so this attribute was removed.
+FATFS fatfs;
+DIR dir;
+FILINFO fno;      // Struct with the attrs of the file.
+CARTRIDGE_FORMAT crt_type;
+bool mdInUse;
+bool firstFolderEntry;
+char currentPath[PATH_BUFFER_SIZE];
 
 typedef struct __attribute__((__packed__)) SECTOR_HEADER{
     uint8_t HeaderData[14];

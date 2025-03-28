@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "eventmachine.h": "c"
+        "eventmachine.h": "c",
+        "pff.h": "c",
+        "sharedbuffers.h": "c",
+        "sharedevents.h": "c"
     }
 }

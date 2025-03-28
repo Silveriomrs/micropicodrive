@@ -3,10 +3,9 @@
  * This module is in charge of visual representation of the information dealth by the RPBPico and the user.
  * @Author: Original work from Dr. Gusman project.
  * @Author: Silverio MRS (Popopo)
- * @Version: 1.0
+ * @Version: 1.0.1
  */
 
-#include <stdlib.h> 
 #include "View.h"
 
 #define PRINT_STR(STR, COL, ROW, MODE) ssd1306_draw_string(&disp, COL * 5, ROW * 8, MODE, STR)
@@ -77,7 +76,7 @@ void showMSG(MSG_TYPE m){
 			printVerticalScroll(" QL","","",110);
 			CLR_SCR();
 			PRINT_STR(" MPD", 0, 0, 2);
-			PRINT_STR("V0.13", 0, 2, 2);	//Development version RC11 11:00H 05/08/2024
+			PRINT_STR("V0.14", 0, 2, 2);	//Development version RC11 11:00H 05/08/2024
 			RENDER_SCR();
 			sleep_ms(0);
 			break;
@@ -248,17 +247,17 @@ void init_i2c(){
 
 //Initialize UI leds
 void init_leds(){
-    gpio_init(PIN_LED_PWR);
-    gpio_init(PIN_LED_SELECT);
-    gpio_init(PIN_LED_READ);
-    gpio_init(PIN_LED_WRITE);
+    gpio_init(LED_PWR);
+    gpio_init(LED_SELECT);
+    gpio_init(LED_READ);
+    gpio_init(LED_WRITE);
 
-    gpio_set_dir(PIN_LED_PWR, true);
-    gpio_set_dir(PIN_LED_SELECT, true);
-    gpio_set_dir(PIN_LED_READ, true);
-    gpio_set_dir(PIN_LED_WRITE, true);
+    gpio_set_dir(LED_PWR, true);
+    gpio_set_dir(LED_SELECT, true);
+    gpio_set_dir(LED_READ, true);
+    gpio_set_dir(LED_WRITE, true);
 
-    gpio_put(PIN_LED_PWR, 1);
+    gpio_put(LED_PWR, 1);
 }
 
 /**
@@ -280,19 +279,11 @@ bool init_screen(){
  * In case the value is not valid it ignores it.
  * @param scrm Screen mode to use {default = 1, medium = 2, big = 3}
  */
-void setSCRM(char* scrm){
-	//TODO What better to use strtol o atoi?. first safer than second one, but requires more code/memory.
-	//Converting it into int
-	//char *endptr;
-	//int m = strtol(scrm, &endptr, 10);
-	// if (*endptr != '\0') {return -1;}
-	int m = atoi(scrm);
-	//Check if it is a valid value
+void setSCRM(const char* scrm){
+	char m = scrm[0];
 	switch(m){
-		case(1):
-		case(2):
-			mode = m;
-			break;
+		case('1'): mode = 1; break;
+		case('2'): mode = 2; break;
 		default:
 			mode = 1;
 	}

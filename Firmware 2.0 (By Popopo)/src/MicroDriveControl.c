@@ -47,6 +47,8 @@ int sm_write_head_2;
 int sm_shifter;
 int sm_exec_write;
 
+//TODO: Momento de comenzar a estudiar, documentar y trabajar, factorizar este código
+
 //enable the microdrive
 void select_md() {
     //Change the md status to active
@@ -492,7 +494,7 @@ void process_ui_event(void* event) {
             reset_transfer_machines();  //Reset the PIO TX/RX machines
             abort_write_gap_alarm();    //Abort any pending write alarm
             disable_DMAs(true);         //Disable all DMA transfers
-            disable_DMAs(false);
+            disable_DMAs(false);        //TODO: ¿Qué razón tiene desactivar y activar seguidamente?
             gpio_put(MD_HEAD_DIR, 1);   //Set dir to input, for sanity
             break;
     }
