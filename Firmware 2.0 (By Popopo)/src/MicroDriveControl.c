@@ -566,6 +566,15 @@ void shifter_irq() {
     event_push(&mdEventQueue, &shifterEvent);
 }
 
+//TODO: factorizing init_DMA WiP
+void trackConfig(dma_channel_config *track, uint tdma, PIO pio, uint sm, bool is_tx){
+    *track = dma_channel_get_default_config(tdma);
+    channel_config_set_dreq(&track, pio_get_dreq(pio, sm, is_tx));  //TODO: check here the parameters
+    channel_config_set_read_increment(&track, is_tx);
+    channel_config_set_write_increment(&track, !is_tx);
+    channel_config_set_transfer_data_size(&track, DMA_SIZE_8);
+}
+
 //Initialize the DMA channels and preconfigure the config structures
 void init_DMAs() {
     //Claim two DMA's, one for each track
@@ -576,33 +585,38 @@ void init_DMAs() {
     irq_set_enabled (DMA_IRQ_0, true);
     irq_set_enabled (DMA_IRQ_1, true);
 
+    //TODO: If working as expected... delete the commented lines below.
     //configure the track1 read config
-    track1ReadConfig = dma_channel_get_default_config(track1DMA);
-    channel_config_set_dreq(&track1ReadConfig, pio_get_dreq(pio0, sm_read_head_1, false));
-    channel_config_set_read_increment(&track1ReadConfig, false);
-    channel_config_set_write_increment(&track1ReadConfig, true);
-    channel_config_set_transfer_data_size(&track1ReadConfig, DMA_SIZE_8);
+    trackConfig(&track1ReadConfig, track1DMA,pio0,sm_read_head_1,false);
+    // track1ReadConfig = dma_channel_get_default_config(track1DMA);
+    // channel_config_set_dreq(&track1ReadConfig, pio_get_dreq(pio0, sm_read_head_1, false));
+    // channel_config_set_read_increment(&track1ReadConfig, false);
+    // channel_config_set_write_increment(&track1ReadConfig, true);
+    // channel_config_set_transfer_data_size(&track1ReadConfig, DMA_SIZE_8);
 
     //configure the track2 read config
-    track2ReadConfig = dma_channel_get_default_config(track2DMA);
-    channel_config_set_dreq(&track2ReadConfig, pio_get_dreq(pio0, sm_read_head_2, false));
-    channel_config_set_read_increment(&track2ReadConfig, false);
-    channel_config_set_write_increment(&track2ReadConfig, true);
-    channel_config_set_transfer_data_size(&track2ReadConfig, DMA_SIZE_8);
+    trackConfig(&track2ReadConfig, track2DMA,pio0,sm_read_head_2,false);
+    // track2ReadConfig = dma_channel_get_default_config(track2DMA);
+    // channel_config_set_dreq(&track2ReadConfig, pio_get_dreq(pio0, sm_read_head_2, false));
+    // channel_config_set_read_increment(&track2ReadConfig, false);
+    // channel_config_set_write_increment(&track2ReadConfig, true);
+    // channel_config_set_transfer_data_size(&track2ReadConfig, DMA_SIZE_8);
 
     //configure the track1 write config
-    track1WriteConfig = dma_channel_get_default_config(track1DMA);
-    channel_config_set_dreq(&track1WriteConfig, pio_get_dreq(pio1, sm_write_head_1, true));
-    channel_config_set_read_increment(&track1WriteConfig, true);
-    channel_config_set_write_increment(&track1WriteConfig, false);
-    channel_config_set_transfer_data_size(&track1WriteConfig, DMA_SIZE_8);
+    trackConfig(&track1WriteConfig, track1DMA,pio1,sm_write_head_1,true);
+    // track1WriteConfig = dma_channel_get_default_config(track1DMA);
+    // channel_config_set_dreq(&track1WriteConfig, pio_get_dreq(pio1, sm_write_head_1, true));
+    // channel_config_set_read_increment(&track1WriteConfig, true);
+    // channel_config_set_write_increment(&track1WriteConfig, false);
+    // channel_config_set_transfer_data_size(&track1WriteConfig, DMA_SIZE_8);
 
     //configure the track2 write config
-    track2WriteConfig = dma_channel_get_default_config(track2DMA);
-    channel_config_set_dreq(&track2WriteConfig, pio_get_dreq(pio1, sm_write_head_2, true));
-    channel_config_set_read_increment(&track2WriteConfig, true);
-    channel_config_set_write_increment(&track2WriteConfig, false);
-    channel_config_set_transfer_data_size(&track2WriteConfig, DMA_SIZE_8);
+    trackConfig(&track2WriteConfig, track2DMA,pio1,sm_read_head_2,true);
+    // track2WriteConfig = dma_channel_get_default_config(track2DMA);
+    // channel_config_set_dreq(&track2WriteConfig, pio_get_dreq(pio1, sm_write_head_2, true));
+    // channel_config_set_read_increment(&track2WriteConfig, true);
+    // channel_config_set_write_increment(&track2WriteConfig, false);
+    // channel_config_set_transfer_data_size(&track2WriteConfig, DMA_SIZE_8);
 
     track1DisabledConfig = dma_channel_get_default_config(track1DMA);
     channel_config_set_enable(&track1DisabledConfig, false);

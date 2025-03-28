@@ -101,23 +101,21 @@ void debounce_button(uint button) {
 				//Just in case there are not more files, ignore next reading till debounce it.
 				res = nextEntry();
 			}
-		} 
+		}
 	}
     sleep_ms(200);
 }
 
 //Check if cancel was requested
 void check_cancel(){
-    if(BTN_PRESSED(PIN_BTN_BACK)) {
-        debounce_button(PIN_BTN_BACK);
-        rewind_path();
-        uiState = OPEN_FOLDER;
-        crt_type = NONE;
-        utmevent_t removeEvt;
-        setCurrectSector(0);  // The only difference with script into the press button function in process_user_interface function.
-        removeEvt.event = UTM_CARTRIDGE_REMOVED;
-        event_push(&uiToMdEventQueue, &removeEvt);
-    }
+	debounce_button(PIN_BTN_BACK);
+	rewind_path();
+	uiState = OPEN_FOLDER;
+	crt_type = NONE;
+	utmevent_t removeEvt;
+	setCurrectSector(0);  // The only difference with script into the press button function in process_user_interface function.
+	removeEvt.event = UTM_CARTRIDGE_REMOVED;
+	event_push(&uiToMdEventQueue, &removeEvt);
 }
 
 void program_delay(uint64_t ms_delay, USER_INTERFACE_STATE nextState){
@@ -387,6 +385,6 @@ void RunUserInterface(){
     while(true){
         event_process_queue(&mdToUiEventQueue, &mtuevtBuffer, 16);
         if(!mdInUse) process_user_interface();
-        else check_cancel();
+        else if (BTN_PRESSED(PIN_BTN_BACK)) check_cancel();
     }
 }
