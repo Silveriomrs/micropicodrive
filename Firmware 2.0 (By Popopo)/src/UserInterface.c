@@ -6,7 +6,7 @@
  * @Author: Dr. Gusman
  * @Author: Modified by Popopo
  * @Version: 1.4.3
- * @date: 21/02/2025
+ * @date: 31/03/2025
  */
 
 #include <string.h>
@@ -106,8 +106,12 @@ void debounce_button(uint button) {
     sleep_ms(200);
 }
 
-//Check if cancel was requested
-void check_cancel(){
+/**
+ * It defines the actions for the BACK button.
+ * When it is pressed the function get back in the path and reset the file values if any was selected before.
+ * The function also cancels the operations programmed in the schedule (if any)
+ */
+void doBack(){
 	debounce_button(PIN_BTN_BACK);
 	rewind_path();
 	uiState = OPEN_FOLDER;
@@ -204,7 +208,7 @@ void process_user_interface(){
 				debounce_button(PIN_BTN_NEXT);
 				uiState = READ_FOLDER_ENTRY;
 			} else if(BTN_PRESSED(PIN_BTN_BACK)) {
-				check_cancel();
+				doBack();
 			}
             break;
         case FILE_SELECTED:
@@ -242,7 +246,7 @@ void process_user_interface(){
         case CARTRIDGE_READY:
 			showMSG(CART_RDY);
 			if(BTN_PRESSED(PIN_BTN_BACK)) {
-				check_cancel();
+				doBack();
 			} else if (BTN_PRESSED(PIN_BTN_SELECT)) {
 				showMSG(CART_SAVING);
 				//Finally shows messages for save result & cart ready (whatever the result was)
@@ -385,6 +389,6 @@ void RunUserInterface(){
     while(true){
         event_process_queue(&mdToUiEventQueue, &mtuevtBuffer, 16);
         if(!mdInUse) process_user_interface();
-        else if (BTN_PRESSED(PIN_BTN_BACK)) check_cancel();
+        else if (BTN_PRESSED(PIN_BTN_BACK)) doBack();
     }
 }
