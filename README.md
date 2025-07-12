@@ -3,7 +3,7 @@
 
 ---
 
-UPDATE 10/08/2024
+UPDATE 11/07/2025
 
 > [!NOTE]
 > _This Fork is updating the information & its material_
@@ -103,3 +103,4 @@ The next videos were made in order to make easier to everyone the understanding 
 - [Presentation](https://youtu.be/yyiCoWN6E_A) of the project and its initial goals.
 - [How to install it](https://youtu.be/CpoAiAcQRLA) points to keep in mind to not damage your Sinclair QL when installing the MDP into it.
 - [User's Guide I](https://youtu.be/wyJjXfhqH4E) user's guide to change the firmware, prepare the SD, customize your preferences & browse it.
+- [User's Guide II](https://youtu.be/AZIg0KIsFko) shows how to use the basis functions of the MDTools to create a new MDV image, also it shows the most common mistakes.
