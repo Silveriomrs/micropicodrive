@@ -582,7 +582,9 @@ void setTrack(dma_channel_config *track, uint tdma, PIO pio, uint sm, bool is_tx
     channel_config_set_transfer_data_size(track, DMA_SIZE_8);
 }
 
-//Initialize the DMA channels and preconfigure the config structures
+/**
+ * Initialize the DMA channels and preconfigure the config structures
+ */
 void init_DMAs() {
     //Claim two DMA's, one for each track
     track1DMA = dma_claim_unused_channel(true);

@@ -3,4 +3,5 @@
   (lib (name "MicroPicoDrive")(type "KiCad")(uri "${KIPRJMOD}/MicroPicoDrive.kicad_sym")(options "")(descr ""))
   (lib (name "RBP2020")(type "KiCad")(uri "${KIPRJMOD}/MicroPicoDrive_Driver.pretty/Symbols/RBP2020.kicad_sym")(options "")(descr ""))
   (lib (name "TXU0304QPWRQ1")(type "KiCad")(uri "${KIPRJMOD}/MicroPicoDrive_Driver.pretty/Symbols/TXU0304QPWRQ1.kicad_sym")(options "")(descr ""))
+  (lib (name "Diode_B240A_13F")(type "KiCad")(uri "${KIPRJMOD}/MicroPicoDrive_Driver.pretty/Symbols/B240A_13F.kicad_sym")(options "")(descr ""))
 )
