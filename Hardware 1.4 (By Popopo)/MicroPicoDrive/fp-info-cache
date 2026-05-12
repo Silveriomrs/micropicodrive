@@ -1,4 +1,4 @@
-27275556167324560
+27296486298484686
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -71385,6 +71385,90 @@ Yellow 5381 Series LED
 0
 2
 2
+MDP_Footprints
+CONN_IDC_2x7
+IDC Connector 2.54mm pitch 2x7p 
+IDC,Connector,2x7
+0
+14
+14
+MDP_Footprints
+Edge_connector_02x08
+
+
+0
+16
+16
+MDP_Footprints
+MODULE_SC0915
+
+
+0
+53
+53
+MDP_Footprints
+MountingHole_3.5mm_safe_screw_area
+Mounting Hole 3.5mm, no annular
+mounting hole 3.5mm no annular
+0
+0
+0
+MDP_Footprints
+QR2_Code_MDP
+
+
+0
+0
+0
+MDP_Footprints
+QR_Code_MDP
+
+
+0
+0
+0
+MDP_Footprints
+RPi_Pico_SMD_TH
+Through hole straight pin header, 2x20, 2.54mm pitch, double rows
+Through hole pin header THT 2x20 2.54mm double row
+0
+83
+43
+MDP_Footprints
+SMA_B240A_13F_DIO
+
+B240A-13-F 
+0
+2
+2
+MDP_Footprints
+SMA_B240A_13F_DIO-L
+
+B240A-13-F 
+0
+2
+2
+MDP_Footprints
+SMA_B240A_13F_DIO-M
+
+B240A-13-F 
+0
+2
+2
+MDP_Footprints
+SOT95P280X145-6N
+DBV (R-PDSO-G6)
+Integrated Circuit
+0
+6
+6
+MDP_Footprints
+TXU0304QPWRQ1
+PW (R-PDSO-G14)
+Integrated Circuit
+0
+14
+14
 MicroPicoDrive_Driver
 CONN_IDC_2x7
 IDC Connector 2.54mm pitch 2x7p 
