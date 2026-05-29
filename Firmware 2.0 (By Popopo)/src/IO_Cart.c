@@ -243,13 +243,23 @@ void process_format(uint8_t bufferSet){
     if(currentSector == 255) currentSector = 0;
 }
 
-//Process when a buffer set has been read by the ULA
-void process_md_read(uint8_t bufferSet){ process_format(bufferSet);}
+/**
+ * Process when a buffer set has been read by the ULA.
+ *  It reads only if the MDV image is unlocked.
+ */
+void process_md_read(uint8_t bufferSet){ 
+    if(mdv_lock_state == MDV_UNLOCKED && !mdv_IO_active) process_format(bufferSet);
+}
 
-//Process when a buffer set has been written by the ULA
+/**
+ * Process when a buffer set has been written by the ULA
+ *  It writes only if the MDV image is unlocked.
+ */
 void process_md_write(uint8_t bufferSet){
-    read_buffer_set(bufferSet);
-    process_format(bufferSet);
+    if(mdv_lock_state == MDV_UNLOCKED && !mdv_IO_active){
+        read_buffer_set(bufferSet);
+        process_format(bufferSet);
+    }
 }
 
 void fix_cartridge_checksums(){
@@ -399,6 +409,10 @@ bool saveMDx(){
     //Open the file and based on return code, finish the operation or continue
     if(pf_open(currentPath) != FR_OK) return false;
 
+    //Block de access to the MDV image
+    mdv_IO_active = true;
+    mdv_lock_state = MDV_LOCKED;
+
     switch(crt_type) {
         case MDV: done = save_mdv_cartridge(currentPath); break;
         //case IMG: res = save_img_cartridge(); break;
@@ -406,6 +420,10 @@ bool saveMDx(){
         default:
             break;
     }
+
+    //Unlock the access to the MDV image
+    mdv_IO_active = false;
+    mdv_lock_state = MDV_UNLOCKED;
 
     return done;
 }
@@ -418,10 +436,17 @@ bool saveMDx(){
 */
 bool loadMDx(){
     bool done = false;
+    //Block de access to the MDV image
+    mdv_lock_state = MDV_LOCKED;
+    mdv_IO_active = true;
     //Update the path to the file.
     updatePath();
     //Open the file and based on return code, finish the operation or continue
-    if (pf_open(currentPath) != FR_OK) return false;
+    if (pf_open(currentPath) != FR_OK) {
+        mdv_IO_active = false;
+        mdv_lock_state = MDV_UNLOCKED;
+        return false;
+    }
     //Load the file considering its type.
     switch(crt_type) {
         case MDV: done = load_mdv_cartridge(currentPath); break;
@@ -431,7 +456,11 @@ bool loadMDx(){
 	}
 
     //Check if loading was right.
-    if(!done) return done;
+    if(!done) {
+        mdv_IO_active = false;
+        mdv_lock_state = MDV_UNLOCKED;
+        return done;
+    }
 
     //Common part of the code.
     //Put the loaded image into the RPBPico
@@ -439,6 +468,10 @@ bool loadMDx(){
     write_buffer_set(0, 0);
     write_buffer_set(1, 1);
     setCurrectSector(2);
+
+    //Unlock the access to the MDV image
+    mdv_IO_active = false;
+    mdv_lock_state = MDV_UNLOCKED;
 
     return done;
 }

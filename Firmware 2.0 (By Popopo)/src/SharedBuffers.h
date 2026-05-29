@@ -1,8 +1,16 @@
+/**
+ * Modified by Popopo
+ */
+
 #ifndef __SHAREDBUFFERS__
 #define __SHAREDBUFFERS__
 
 #include "pico/stdlib.h"
 #include "EventMachine.h"
+//for lock access simult to MDV image.
+#include <stdbool.h>
+#include <stdint.h>
+//
 
 #define CART_SIZE 160140
 
@@ -17,6 +25,17 @@
 
 #define PREAMBLE_ZERO_BYTES 10
 #define PREAMBLE_ONE_BYTES 2
+
+//Locker for access to MDVs in RAM.
+typedef enum {
+    MDV_UNLOCKED = 0,
+    MDV_LOCKED = 1
+} mdv_lock_state_t;
+
+extern volatile mdv_lock_state_t mdv_lock_state;        //Blocked or not
+extern volatile bool mdv_IO_active;                     //Active IO to mdv or not
+
+//
 
 extern uint8_t cartridge_image[CART_SIZE];
 

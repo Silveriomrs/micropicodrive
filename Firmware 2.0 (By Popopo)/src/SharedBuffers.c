@@ -1,5 +1,7 @@
-// #include <stdio.h>           //TODO: Este lo carga en UserInterface.c
-// #include "EventMachine.h"    //TODO: Este lo carga en UserInterface.c
+/**
+ * Modified by Popopo
+ */
+
 #include "SharedBuffers.h"
 /*
 
@@ -8,6 +10,9 @@ We have two sets so we can go ahead before the user interface core
 processes the received data or writes new sectors to it
 
 */
+// initial lock state
+volatile mdv_lock_state_t mdv_lock_state = MDV_UNLOCKED;
+volatile bool mdv_IO_active = false;
 
 //First set of buffers
 //Header of a sector, two tracks
