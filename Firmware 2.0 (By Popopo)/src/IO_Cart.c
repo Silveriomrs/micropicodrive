@@ -248,7 +248,7 @@ void process_format(uint8_t bufferSet){
  *  It reads only if the MDV image is unlocked.
  */
 void process_md_read(uint8_t bufferSet){ 
-    if(mdv_lock_state == MDV_UNLOCKED && !mdv_IO_active) process_format(bufferSet);
+    if(mdv_state == MDV_ACTIVE && mdv_lock_state == MDV_UNLOCKED && !mdv_IO_active) process_format(bufferSet);
 }
 
 /**
@@ -256,7 +256,7 @@ void process_md_read(uint8_t bufferSet){
  *  It writes only if the MDV image is unlocked.
  */
 void process_md_write(uint8_t bufferSet){
-    if(mdv_lock_state == MDV_UNLOCKED && !mdv_IO_active){
+    if(mdv_state == MDV_ACTIVE && mdv_lock_state == MDV_UNLOCKED && !mdv_IO_active){
         read_buffer_set(bufferSet);
         process_format(bufferSet);
     }
@@ -410,6 +410,8 @@ bool saveMDx(){
     if(pf_open(currentPath) != FR_OK) return false;
 
     //Block de access to the MDV image
+    mdv_state = MDV_IDLE;
+    //
     mdv_IO_active = true;
     mdv_lock_state = MDV_LOCKED;
 
@@ -422,6 +424,8 @@ bool saveMDx(){
     }
 
     //Unlock the access to the MDV image
+    mdv_state = MDV_ACTIVE;
+    //
     mdv_IO_active = false;
     mdv_lock_state = MDV_UNLOCKED;
 
@@ -436,6 +440,7 @@ bool saveMDx(){
 */
 bool loadMDx(){
     bool done = false;
+    mdv_state = MDV_LOADING;
     //Block de access to the MDV image
     mdv_lock_state = MDV_LOCKED;
     mdv_IO_active = true;
@@ -443,6 +448,8 @@ bool loadMDx(){
     updatePath();
     //Open the file and based on return code, finish the operation or continue
     if (pf_open(currentPath) != FR_OK) {
+        mdv_state = MDV_IDLE;
+        //
         mdv_IO_active = false;
         mdv_lock_state = MDV_UNLOCKED;
         return false;
@@ -457,6 +464,8 @@ bool loadMDx(){
 
     //Check if loading was right.
     if(!done) {
+        mdv_state = MDV_IDLE;
+        //
         mdv_IO_active = false;
         mdv_lock_state = MDV_UNLOCKED;
         return done;
@@ -470,6 +479,8 @@ bool loadMDx(){
     setCurrectSector(2);
 
     //Unlock the access to the MDV image
+    mdv_state = MDV_ACTIVE;
+    //
     mdv_IO_active = false;
     mdv_lock_state = MDV_UNLOCKED;
 

@@ -13,6 +13,8 @@ processes the received data or writes new sectors to it
 // initial lock state
 volatile mdv_lock_state_t mdv_lock_state = MDV_UNLOCKED;
 volatile bool mdv_IO_active = false;
+//
+volatile mdv_system_state_t mdv_state = MDV_IDLE;
 
 //First set of buffers
 //Header of a sector, two tracks

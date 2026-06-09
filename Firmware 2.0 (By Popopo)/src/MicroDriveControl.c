@@ -1,3 +1,5 @@
+//TODO: Momento de comenzar a estudiar, documentar y trabajar, factorizar este código.
+
 #include "hardware/pio.h"
 #include "hardware/gpio.h"
 #include "hardware/irq.h"
@@ -14,6 +16,7 @@ bool secondBufferSet = false;
 
 mdstatus_t mdStatus = MDS_DESELECTED;
 mdactivestatus_t activeStatus = MDA_IDLE;
+mdmediastate_t mdMediaState = MD_MEDIA_NONE;
 
 evtmachine_t mdEventQueue;
 
@@ -47,7 +50,30 @@ int sm_write_head_2;
 int sm_shifter;
 int sm_exec_write;
 
-//TODO: Momento de comenzar a estudiar, documentar y trabajar, factorizar este código
+/**
+ * Helper to know the MD activity status of reading.
+ */
+static inline bool is_read_state(mdactivestatus_t s){
+    //FIXME: it should be like this, always return TRUE, but if I change it, the code doesn't work
+    //Giving always BAD OR CHANGED MEDIUM after a DIR 
+
+    // return s == MDA_READ_HEADER || s == MDA_READ_HEADER_GAP ||
+    //        s == MDA_READ_SECTOR || s == MDA_READ_SECTOR_GAP;
+    return activeStatus >= MDA_READ_HEADER || activeStatus <= MDA_READ_SECTOR;
+    
+}
+
+/**
+ * Helper to know the MD activity status of writting
+ */
+static inline bool is_write_state(mdactivestatus_t s){
+    //FIXME: it should be like this, always return TRUE, but if I change it, the code doesn't work
+    //Giving always BAD OR CHANGED MEDIUM after a DIR 
+
+    // return s == MDA_WRITE_HEADER || s == MDA_WRITE_HEADER_GAP ||
+    //        s == MDA_WRITE_SECTOR || s == MDA_WRITE_SECTOR_GAP;
+    return activeStatus >= MDA_WRITE_HEADER_GAP || activeStatus <= MDA_WRITE_SECTOR;
+}
 
 //enable the microdrive
 void select_md() {
@@ -80,10 +106,11 @@ void deselect_md() {
     //Disable the status machine
     deselect_PIO_status();
     //Disable the DMAs if they're active
-    // if(activeStatus >= MDA_READ_HEADER_GAP && activeStatus <= MDA_READ_SECTOR) disable_DMAs(true);
-    // else if(activeStatus >= MDA_WRITE_HEADER_GAP && activeStatus <= MDA_WRITE_SECTOR) disable_DMAs(false);
-    if(activeStatus >= MDA_READ_HEADER || activeStatus <= MDA_READ_SECTOR) disable_DMAs(true);
-    else if(activeStatus >= MDA_WRITE_HEADER_GAP || activeStatus <= MDA_WRITE_SECTOR) disable_DMAs(false);
+    if(is_read_state(activeStatus))
+        disable_DMAs(true);
+    else if(is_write_state(activeStatus))
+        disable_DMAs(false);
+
     //Set dir to input to avoid problems
     gpio_put(MD_HEAD_DIR, 1);
     //Check for any buffer change. This is mostly by sanity, the MD should not deselect the device while it's
@@ -178,20 +205,21 @@ bool common_gap_code(uint8_t** selectedTrack1Buffer, uint8_t** selectedTrack2Buf
     //WRITE_SECTOR_GAP -> sector
     //WRITE_SECTOR -> header
 
-    bool isHeader;
 
+    bool isHeader;
+    
     switch(activeStatus) {
         case MDA_IDLE:
         case MDA_READ_HEADER_GAP:
+        //case MDA_READ_SECTOR_GAP:
         case MDA_READ_SECTOR:
         case MDA_WRITE_HEADER_GAP:
+        //case MDA_WRITE_SECTOR_GAP:
         case MDA_WRITE_SECTOR:
             isHeader = true;
             break;
-        // case MDA_READ_HEADER:
-        // case MDA_READ_SECTOR_GAP:
-        // case MDA_WRITE_HEADER:
-        // case MDA_WRITE_SECTOR_GAP:
+        //case MDA_READ_HEADER:
+        //case MDA_WRITE_HEADER:
         //     isHeader = false;
         //     break;
         default:
@@ -411,6 +439,28 @@ static inline void end_PIO_write_gap() {
     //pio_sm_exec(pio1, sm_exec_write, pio_encode_irq_clear(false, 7));
 }
 
+/**
+ * To produce a safe reset
+ */
+void md_safe_reset(void) {
+    reset_transfer_machines();
+    abort_write_gap_alarm();
+    disable_DMAs(true);
+    disable_DMAs(false);
+    gpio_put(MD_HEAD_DIR, 1);
+
+    abort_shifter_alarm();
+
+    activeStatus = MDA_IDLE;
+    secondBufferSet = false;
+    track1DMAFired = false;
+    track2DMAFired = false; 
+    //
+    deselect_PIO_status();
+    begin_PIO_read_gap();
+    sleep_PIO_write();
+}
+
 //Handler to process events related to the microdrive
 void process_md_event(void* event) {
     mdcontrolevent_t* mdevt = (mdcontrolevent_t*)event;
@@ -491,20 +541,23 @@ void process_ui_event(void* event) {
             break;
         case UTM_CARTRIDGE_REMOVED:
             isCartridgeInserted = false;
+            mdMediaState = MD_MEDIA_REMOVE_PENDING;
             reset_transfer_machines();  //Reset the PIO TX/RX machines
             abort_write_gap_alarm();    //Abort any pending write alarm
             disable_DMAs(true);         //Disable all DMA transfers
             disable_DMAs(false);        //TODO: ¿Qué razón tiene desactivar y activar seguidamente? quizás un reset
             gpio_put(MD_HEAD_DIR, 1);   //Set dir to input, for sanity
+            //md_safe_reset();
             break;
     }
-    //Sanity commands 
+
+    //Sanity commands where here previously, I think it was a bug.
     activeStatus = MDA_IDLE;    //we start in the idle status
     secondBufferSet = false;    //Reset the active buffer set
     track1DMAFired = false;     //This is already called in disable_dma
     track2DMAFired = false;
-
 }
+
 
 /**
  * The PIO machine has finished sending data to the ULA.
@@ -604,7 +657,7 @@ void init_DMAs() {
     setTrack(&track1WriteConfig, track1DMA, pio1, sm_write_head_1, true);
 
     //configure the track2 write config
-    setTrack(&track2WriteConfig, track2DMA, pio1, sm_read_head_2, true);
+    setTrack(&track2WriteConfig, track2DMA, pio1, sm_write_head_2, true);
 
     track1DisabledConfig = dma_channel_get_default_config(track1DMA);
     channel_config_set_enable(&track1DisabledConfig, false);
@@ -667,14 +720,18 @@ void disable_DMAs(bool readDMAs) {
     track1DMAFired = false;
     track2DMAFired = false;
 
+    //FIXME: delete those commented lines, they are not used.
+    // if(activeStatus == MDA_READ_HEADER) {
+    //     int32_t transferA = dma_channel_hw_addr(track1DMA)->transfer_count;
+    //     //Posible bug, no pasa un canal si no el número de transferencia.
+    //     //Comento para ver si es estable este cambio.
+    //     //TODO: commented: dma_channel_abort(transferA);
+    //     int32_t transferB = dma_channel_hw_addr(track2DMA)->transfer_count;
+    //     //TODO: commented: dma_channel_abort(transferB);
+    //     int32_t final = transferA - transferB;
 
-    if(activeStatus == MDA_READ_HEADER) {
-        int32_t transferA = dma_channel_hw_addr(track1DMA)->transfer_count;
-        dma_channel_abort(transferA);
-        int32_t transferB = dma_channel_hw_addr(track2DMA)->transfer_count;
-        dma_channel_abort(transferB);
-        int32_t final = transferA - transferB;
-    }
+    //     (void)final;
+    // }
 
     //Abort the channels, configure as disabled and clear any pending interrupts
     dma_channel_set_irq0_enabled(track1DMA, false);

@@ -25,6 +25,8 @@
 #define QL_WRITE_GAP_US 3600
 #define SHIFTER_SELECT_US 10000
 
+// STATE MODEL
+
 //Enumeration with the meaning of the status lines
 typedef enum __attribute__((packed)) {
     MDL_WRITE = 0, //ULA wants to write to the MD
@@ -40,6 +42,7 @@ typedef enum __attribute__((packed)) {
 } mdstatus_t;
 
 //Selected substatus
+//TODO: WARNING: legacy substate, should be replaced by mdpipestate_t
 typedef enum __attribute__((packed)) {
     MDA_IDLE,
     MDA_READ_HEADER_GAP,
@@ -52,11 +55,28 @@ typedef enum __attribute__((packed)) {
     MDA_WRITE_SECTOR
 } mdactivestatus_t;
 
+//Definition of the the medium states.
+typedef enum __attribute__((packed)) {
+    MD_MEDIA_NONE,
+    MD_MEDIA_ACTIVE,
+    MD_MEDIA_REMOVE_PENDING
+} mdmediastate_t;
+
+//Definition of the pipeline states.
+typedef enum __attribute__((packed)) {
+    MD_PIPE_IDLE,
+    MD_PIPE_READ,
+    MD_PIPE_WRITE,
+    MD_PIPE_GAP
+} mdpipestate_t;
+
 //Internal events for the md control
 typedef enum __attribute__((packed)) {
     MDE_SHIFT_CHANGED, //Shifter status has changed (0 or 1)
     MDE_SELECT_TIMEOUT_EXPIRED, //Shifter selection time has expired, MD has been selected or deselected
     MDE_MD_STATUS_CHANGED, //Status lines have changed
+    MDE_DMA_TRACK1_DONE,   //TODO: added for transitional replacement of read/write_irq
+    MDE_DMA_TRACK2_DONE,   //TODO: added for transitional replacement of read/write_irq
     MDE_DMA_READ_IRQ, //A read IRQ has been raised
     MDE_DMA_WRITE_IRQ, //A write IRQ has been changed
     MDE_CHECK_WRITE_FINISH, //Check if the TX buffers are empty and the transfer has finished
@@ -72,10 +92,12 @@ void select_md();
 void deselect_md();
 void check_ui_notifications(mdactivestatus_t previousState, bool fromGap);
 bool common_gap_code(uint8_t** selectedTrack1Buffer, uint8_t** selectedTrack2Buffer, bool forRead);
+// Internal pipeline control (DO NOT call from UI)
 void begin_write_gap();
 void end_write_gap();
 void begin_read_gap();
 void end_read_gap();
+//
 void shifter_alarm(uint alarm_num);
 void write_gap_alarm(uint alarm_num);
 static inline void abort_shifter_alarm();

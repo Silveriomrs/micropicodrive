@@ -32,6 +32,17 @@ typedef enum {
     MDV_LOCKED = 1
 } mdv_lock_state_t;
 
+//State to flag and lock processing
+typedef enum {
+    MDV_IDLE,
+    MDV_LOADING,
+    MDV_SAVING,
+    MDV_ACTIVE
+} mdv_system_state_t;
+
+extern volatile mdv_system_state_t mdv_state;
+//
+
 extern volatile mdv_lock_state_t mdv_lock_state;        //Blocked or not
 extern volatile bool mdv_IO_active;                     //Active IO to mdv or not
 
