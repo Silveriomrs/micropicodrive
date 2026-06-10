@@ -3,10 +3,10 @@
 
 ---
 
-UPDATE 11/07/2025
+UPDATE 10/06/2026
 
 > [!NOTE]
-> _This Fork is updating the information & its material_
+> _New revision of the driver & cartridges with extra protection and stable signals. Firmware revision 0.14 improved & stable. Firmware & driver tested, not tested last cartridge sub-version 'e' yet_
 
 ---
 
@@ -27,14 +27,14 @@ The image above shows the main driver unit and the 2 cartridges versions with lo
 _Schema of the driver unit that goes inside the QL._
 
 <p align="center">
-<img src="Images/MPD Driver Schema.jpg"  width="700">
+<img src="Images/MPD Driver Schema.png"  width="700">
 </p>
 
 ---
 _Schema of the cartridge that host the microSD and interact with the user._
 
 <p align="center">
-<img src="Images/MPD Cartridge Schema.jpg"  width="700">
+<img src="Images/MPD Cartridge Schema.png"  width="700">
 </p>
 
 
@@ -74,19 +74,22 @@ It makes sense if the idea is to get chances of scalability and maintenance by t
 + Solved problem with QL metal chassis under keyboard.
 + Solved problem with right lateral QL case and the regulator.
 + Sound System ready for sound emulation or new features related with it (Working in progress).
++ Added decoupling capacitors to make signals more stable for oLED.
++ Added schottky diode on the driver that allows program it without disconecting from the main QL PCB. For extra it gives extra protection.
 
 
 ## What is coming (TODO functionalities)
 
 Majority of users find the device functional and accomplish their expectations, however still it keeps some nice surprises to powering it up. **All of then can be activated optionally (_opt_)**.
 
-- **Software/firmware**
+ **Software/firmware**
 - [x] Config file to customize preferences (opt).
 - [x] New screen modes with bigger fonts (opt).
 - [x] Capability of defining a default image to load when turning on the QL or inserting the cartridge (opt).
 - [ ] Direct writing (optional).
 - [ ] Direct control from the QL OS over the storage system (mSD).
-- **Hardware**
+
+ **Hardware**
 - [ ] Sound emulation of the motor (WiP) (opt).
 - [ ] MIDI player (WiP) (opt).
 - [ ] Bluetooth cartridge and its APP to load images from other devices (PC, Phone, Tablet...) (opt).
@@ -104,3 +107,9 @@ The next videos were made in order to make easier to everyone the understanding 
 - [How to install it](https://youtu.be/CpoAiAcQRLA) points to keep in mind to not damage your Sinclair QL when installing the MDP into it.
 - [User's Guide I](https://youtu.be/wyJjXfhqH4E) user's guide to change the firmware, prepare the SD, customize your preferences & browse it.
 - [User's Guide II](https://youtu.be/AZIg0KIsFko) shows how to use the basis functions of the MDTools to create a new MDV image, also it shows the most common mistakes.
+
+# Gerbers & Firmware
+To download and make the devices on your own using my design you can access to the Gerbers and Firmwares at the release section:
+[Releases Gerbers & Firmware](https://github.com/Silveriomrs/micropicodrive/releases/tag/v1.4)
+
+For i/BOM check directory: [Schmems & i/BOMs](https://github.com/Silveriomrs/micropicodrive/tree/1.4/Hardware%201.4%20(By%20Popopo))

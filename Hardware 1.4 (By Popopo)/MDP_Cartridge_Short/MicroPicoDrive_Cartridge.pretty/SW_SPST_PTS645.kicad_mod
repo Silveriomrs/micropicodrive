@@ -1,0 +1,275 @@
+(footprint "SW_SPST_PTS645"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(descr "C&K Components SPST SMD PTS645 Series 6mm Tact Switch")
+	(tags "SPST Button Switch")
+	(property "Reference" "SW3"
+		(at 0 2.225 0)
+		(layer "F.SilkS")
+		(uuid "4d4a545b-ed34-492f-9999-7d83a3696e6c")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "SW_Push"
+		(at 0 4.15 0)
+		(layer "F.Fab")
+		(uuid "60d6efec-5883-432c-a338-c7f39268060b")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" "~"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "24a460dd-f79a-4672-8d29-d71e193982b8")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "Push button switch, generic, two pins"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "366cea4d-e553-4d9e-8462-88f83452bc82")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -3.23 -3.23)
+		(end 3.23 -3.23)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "d51c9add-f6b6-4813-974c-dcf650752f89")
+	)
+	(fp_line
+		(start -3.23 -3.2)
+		(end -3.23 -3.23)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "152507d6-3557-4bb6-b658-279f424557e8")
+	)
+	(fp_line
+		(start -3.23 -1.3)
+		(end -3.23 1.3)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "c7dc3ea5-8c8c-4e19-9809-6ae74f6401c2")
+	)
+	(fp_line
+		(start -3.23 3.23)
+		(end -3.23 3.2)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "39fa2b9f-4dad-418b-be93-9e7900c9abe2")
+	)
+	(fp_line
+		(start -3.23 3.23)
+		(end 3.23 3.23)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "deed4d9e-358c-4a84-a366-c0d631293e5d")
+	)
+	(fp_line
+		(start 3.23 -3.23)
+		(end 3.23 -3.2)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "826543b3-522c-44ab-9625-7afe7853ab25")
+	)
+	(fp_line
+		(start 3.23 -1.3)
+		(end 3.23 1.3)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "dc9e8275-0116-4973-ad14-91674cc7df1b")
+	)
+	(fp_line
+		(start 3.23 3.23)
+		(end 3.23 3.2)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "33fb026e-9911-4082-b138-a95442fd6f18")
+	)
+	(fp_line
+		(start -5.05 -3.4)
+		(end -5.05 3.4)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "47dfc112-c72f-4edf-83a1-2d3faf03c555")
+	)
+	(fp_line
+		(start -5.05 -3.4)
+		(end 5.05 -3.4)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "e78bc351-3e10-4132-9d4a-73b56bac29ea")
+	)
+	(fp_line
+		(start -5.05 3.4)
+		(end 5.05 3.4)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "4eeb753a-7247-47e6-9006-49ce406b2284")
+	)
+	(fp_line
+		(start 5.05 3.4)
+		(end 5.05 -3.4)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "90127ba5-188c-43f5-9550-a410106c41e2")
+	)
+	(fp_line
+		(start -3 -3)
+		(end -3 3)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "f8e4c3f5-9492-4449-a1c8-1f9cb73ed3df")
+	)
+	(fp_line
+		(start -3 3)
+		(end 3 3)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "e7ccac21-0209-4b96-9ec0-9b4414af7c10")
+	)
+	(fp_line
+		(start 3 -3)
+		(end -3 -3)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "dd9d25b1-aa5b-4877-81ad-6b055a57f3fa")
+	)
+	(fp_line
+		(start 3 3)
+		(end 3 -3)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "cadb668f-7a5d-4831-bb91-c97a72ce2566")
+	)
+	(fp_circle
+		(center 0 0)
+		(end 1.75 -0.05)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "68bca3af-846d-4940-ba78-6caef8cb8805")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 -4.05 0)
+		(layer "F.Fab")
+		(uuid "61d2f498-1b06-47fd-a92a-86e3ffc647c9")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" smd rect
+		(at -3.98 -2.25)
+		(size 1.55 1.3)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "099cf88a-69f7-402f-ad8a-ef3459b50307")
+	)
+	(pad "1" smd rect
+		(at 3.98 -2.25)
+		(size 1.55 1.3)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "b7579cd8-cb9b-42bd-84b7-b19c4796b5ac")
+	)
+	(pad "2" smd rect
+		(at -3.98 2.25)
+		(size 1.55 1.3)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "721af183-54a2-4196-8002-38203fea9aa5")
+	)
+	(pad "2" smd rect
+		(at 3.98 2.25)
+		(size 1.55 1.3)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "1cae210f-1133-4f87-a361-99ed54d768a8")
+	)
+	(embedded_fonts no)
+	(model "${KICAD6_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_PTS645.wrl"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

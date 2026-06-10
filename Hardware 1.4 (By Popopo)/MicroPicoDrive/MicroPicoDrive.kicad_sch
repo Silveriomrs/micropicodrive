@@ -4535,7 +4535,7 @@
 		)
 		(uuid "47d62495-0a6f-450d-b8a1-70992cfc772a")
 	)
-	(text "Connector Cartucho"
+	(text "Connector Cartridge"
 		(exclude_from_sim no)
 		(at 21.59 29.21 0)
 		(effects
