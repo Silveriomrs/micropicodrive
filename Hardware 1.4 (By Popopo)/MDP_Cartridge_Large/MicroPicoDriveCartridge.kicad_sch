@@ -2011,7 +2011,7 @@
 		)
 		(uuid "388c3123-8e99-4a66-9720-27169f9b299a")
 	)
-	(text "Pin#14 > Signal UI_DETECT.\nRecive UI_DETECT signal in order to indicate the cartridge is inserted."
+	(text "Pin#14 > Signal UI_DETECT.\nTakes UI_DETECT signal to GND to indicate the cartridge is inserted."
 		(exclude_from_sim no)
 		(at 170.18 106.68 0)
 		(effects
@@ -2064,6 +2064,12 @@
 		(uuid "e2c61a79-6e0a-4be8-8606-1121148f441b")
 	)
 	(junction
+		(at 213.36 101.6)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1390713b-1adb-47d8-adaa-9210a09bd84e")
+	)
+	(junction
 		(at 181.61 83.82)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2104,10 +2110,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "aca8f045-ff9e-4020-83dc-f0dd7298ddb3")
-	)
-	(no_connect
-		(at 212.09 101.6)
-		(uuid "37371709-4df1-42c4-9314-192d885d7cc0")
 	)
 	(no_connect
 		(at 185.42 134.62)
@@ -2287,6 +2289,16 @@
 	)
 	(wire
 		(pts
+			(xy 213.36 99.06) (xy 213.36 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2c2bebba-5322-49ba-9d7f-9dc4c1a7a948")
+	)
+	(wire
+		(pts
 			(xy 87.63 87.63) (xy 86.36 87.63)
 		)
 		(stroke
@@ -2387,6 +2399,16 @@
 	)
 	(wire
 		(pts
+			(xy 212.09 99.06) (xy 213.36 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4a8b26e8-fa5e-4226-a28e-64f4e6f1a54d")
+	)
+	(wire
+		(pts
 			(xy 99.06 91.44) (xy 99.06 95.25)
 		)
 		(stroke
@@ -2414,6 +2436,16 @@
 			(type default)
 		)
 		(uuid "614092e5-05d1-4250-bc8e-a056380f5842")
+	)
+	(wire
+		(pts
+			(xy 213.36 101.6) (xy 217.17 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "67f9d7a6-3346-4765-991d-7ee6a9ee587d")
 	)
 	(wire
 		(pts
@@ -2617,7 +2649,7 @@
 	)
 	(wire
 		(pts
-			(xy 212.09 99.06) (xy 213.36 99.06)
+			(xy 212.09 101.6) (xy 213.36 101.6)
 		)
 		(stroke
 			(width 0)
@@ -3861,7 +3893,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 213.36 99.06 90)
+		(at 217.17 101.6 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -3870,7 +3902,7 @@
 		(dnp no)
 		(uuid "79e4b8e6-518d-49e8-8c80-9d98fc6fb722")
 		(property "Reference" "#PWR03"
-			(at 219.71 99.06 0)
+			(at 223.52 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3879,7 +3911,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 220.98 99.06 90)
+			(at 224.79 101.6 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3888,7 +3920,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 213.36 99.06 0)
+			(at 217.17 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3897,7 +3929,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 213.36 99.06 0)
+			(at 217.17 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3906,7 +3938,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 213.36 99.06 0)
+			(at 217.17 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
