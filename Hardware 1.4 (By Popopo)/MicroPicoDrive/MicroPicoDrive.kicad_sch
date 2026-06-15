@@ -6,8 +6,8 @@
 	(paper "A4")
 	(title_block
 		(title "Micro Pico Drive")
-		(date "2026-05-09")
-		(rev "1.4.f")
+		(date "2026-06-15")
+		(rev "1.4.g")
 		(comment 1 "Original work: Dr. Gusman")
 		(comment 2 "Modified by: Popopo")
 		(comment 3 "Replacement for MicroDrive in Sinclair computers (QL & Spectrum)")
