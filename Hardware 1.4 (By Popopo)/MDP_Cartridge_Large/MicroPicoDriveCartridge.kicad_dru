@@ -1,0 +1,4 @@
+(version 1)
+(rule "Reduced clearence for EDGE slot"
+   (constraint edge_clearance (min 0.2mm))
+   (condition "A.Parent == 'J1'"))

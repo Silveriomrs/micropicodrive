@@ -49,7 +49,7 @@
         "silk_text_upright": false,
         "zones": {
           "45_degree_only": false,
-          "min_clearance": 0.0
+          "min_clearance": 0.508
         }
       },
       "diff_pair_dimensions": [
@@ -529,7 +529,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "/home/silverio/Escritorio/Gebers Driver 1.4.e/",
+      "plot": "/home/popopo/Git/micropicodrive/Hardware 1.4 (By Popopo)/MicroPicoDrive/Gerber/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",
@@ -709,6 +709,18 @@
           "group_by": false,
           "label": "Descripción",
           "name": "Description",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Sim.Device",
+          "name": "Sim.Device",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Sim.Pins",
+          "name": "Sim.Pins",
           "show": false
         }
       ],
