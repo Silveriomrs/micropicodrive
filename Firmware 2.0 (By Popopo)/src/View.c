@@ -106,7 +106,7 @@ void showMSG(MSG_TYPE m){
 			RENDER_SCR();
 			break;
 		case NO_MORE_FILES:
-			printHorizontalScroll("","No more files in the directory",5,170);
+			printHorizontalScroll("","...No more files",8*mode,170);
 			break;
 		case CART_FORMAT_UNK:
 			if(mode==1) printMSG("Unknown","cartridge","format.",4000);
@@ -182,23 +182,38 @@ void printMSG(const char* msg1, const char* msg2, const char* msg3, int time){
 
 
 /**
- * It shows a message with lateral scroll. Specially conveniente for big fonts.
- * @param msg1 Message to print in the upper zone of the screen.
+ * It shows a message with lateral scroll. Specially useful for big fonts.
+ * @param msg1 Message to print in the upper zone of the screen (not scrolling == HEAD).
  * @param msg2 Message to print in the body of the screen with horizontal scroll.
+ * @param row  Row in the screen where to show the scrolling text (coordinate Y)
  * @param time A good time set is 140ms but users can define others.
 */
-void printHorizontalScroll(const char*msg1, const char*msg2, int row2, const int time){
+void printHorizontalScroll(const char*msg1, const char*msg2, int row, const int time){
 	int size = strlen(msg2);
 	int i = 0;
-	while(i<size){
-		//printMSG(msg1,(char*)&msg2[i],msg3,time);
-		CLR_SCR();
-		if(msg1[0] != '\0') ssd1306_draw_string(&disp, 0, 0, mode, msg1);
-		if(msg2[0] != '\0') ssd1306_draw_string(&disp, 0, row2, mode, (char*)&msg2[i]);
-		RENDER_SCR();
-		sleep_ms(time);
-		i++;
+	uint8_t auxMode = mode;
+	//
+    CLR_SCR();
+
+    if (msg1[0] != '\0') {
+        ssd1306_draw_string(&disp, 0, 0, mode, msg1);
+    } else {
+		auxMode = 2;
 	}
+	
+
+   while (i < size) {
+        ssd1306_clear_row(&disp, row, auxMode);
+
+        if (msg2[0] != '\0') {
+            ssd1306_draw_string(&disp, 0, row, auxMode, (char*)&msg2[i]);
+        }
+
+        RENDER_SCR();
+        sleep_ms(time);
+        i++;
+    }
+
 }
 
 /**

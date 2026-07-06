@@ -49,6 +49,32 @@ SOFTWARE.
 
 */
 
+/*
+
+MIT License
+
+Copyright (c) 2026 Silverio M Rosales Santana
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+
 #include <pico/stdlib.h>
 #include <hardware/i2c.h>
 #include <pico/binary_info.h>
@@ -244,6 +270,19 @@ void ssd1306_draw_char(ssd1306_t *p, uint32_t x, uint32_t y, uint32_t scale, cha
 
 void ssd1306_draw_string(ssd1306_t *p, uint32_t x, uint32_t y, uint32_t scale, const char *s) {
     ssd1306_draw_string_with_font(p, x, y, scale, font_8x5, s);
+}
+
+/**
+ * Clean an horizontal area compleately.
+ *  The starting row must be a factor by 8 (page aling).
+ *  and num_pages the number of pages (of 8pxs height) takes the the row (1 for mode=1, 2 for mode=2).
+ * @param p display
+ * @param row_start starting row
+ * @param num_pages number of pages
+ */
+void ssd1306_clear_row(ssd1306_t *p, uint32_t row_start, uint32_t num_pages) {
+    uint32_t page_start = row_start >> 3;                                           // row_start / 8
+    memset(p->buffer + p->width * page_start, 0, p->width * num_pages);
 }
 
 static inline uint32_t ssd1306_bmp_get_val(const uint8_t *data, const size_t offset, uint8_t size) {

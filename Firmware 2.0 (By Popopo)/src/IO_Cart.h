@@ -94,7 +94,7 @@ bool load_mdv_cartridge(char const *file);
 bool load_mpd_cartridge(char const *file);
 bool isFilePresent(char const *file);
 bool loadFile(char const *file, BYTE *buffDataIn, const UINT block, UINT *br);
-bool autoLoadFile(char const *fileName);
+bool linkFile(char const *fileName);
 CARTRIDGE_FORMAT getFSType();
 bool isSelectable();
 

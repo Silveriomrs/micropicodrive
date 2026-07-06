@@ -41,6 +41,7 @@ typedef enum{
 	FOLDER_ERR_READ,
 	FOLDER_EPTY,
 	NO_MORE_FILES,
+	//
 	LDING_MDV,
 	LDING_MDP,
 	LDING_DEFAULT,
@@ -53,7 +54,7 @@ void setSCRM(const char* scrm);
 void show_file_name(const char* fname, bool IN_FOLDER);
 void showMSG(MSG_TYPE m);
 void printMSG(const char* msg1, const char* msg2, const char* msg3, int time);
-void printHorizontalScroll(const char*msg1, const char*msg2, int row2, const int time);
+void printHorizontalScroll(const char*msg1, const char*msg2, int row, const int time);
 void printVerticalScroll(const char*msg1, const char*msg2, const char* msg3, const int time);
 
 #endif

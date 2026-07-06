@@ -198,14 +198,16 @@ void process_user_interface(){
 			}
             break;
         case SELECT_FILE:
+			debounce_button(PIN_BTN_SELECT);
+
 			if(BTN_PRESSED(PIN_BTN_SELECT) && !firstFolderEntry) {
-				debounce_button(PIN_BTN_SELECT);
+				//debounce_button(PIN_BTN_SELECT);
 				if(IN_FOLDER) {
 					updatePath();
 					uiState = OPEN_FOLDER;
 				} else uiState = FILE_SELECTED;
 			} else if(BTN_PRESSED(PIN_BTN_NEXT) && !firstFolderEntry) {
-				debounce_button(PIN_BTN_NEXT);
+				//debounce_button(PIN_BTN_NEXT);
 				uiState = READ_FOLDER_ENTRY;
 			} else if(BTN_PRESSED(PIN_BTN_BACK)) {
 				doBack();
@@ -300,6 +302,7 @@ char* spliter(char *text, const char *filter){
 	return token;
 }
 
+
 /**
  * The function loads default file and return the control to the control function.
  * @return True if the operation was successful. Otherwise it returns false.
@@ -319,6 +322,7 @@ bool loadDefault(){
 	bool done = false;
 	bool isLoaded = false;				//Flag if there is a defined image for loading and the process was successful
 	bool isErr = false;					//Flag for any error in Config file.
+	bool isSetFile = false;				//Flag to mark when config aim to a file to load.
 	// Vars to hold data & info
 	char* fileName;
 	char* scrm;  
@@ -335,9 +339,12 @@ bool loadDefault(){
 		fileName = spliter((char*)ctext,"FILE");
 
 		//Try to load the file when defined in config.
-		if(fileName != NULL){ isLoaded = autoLoadFile(fileName);}
-		//It must occurr when trying to load bug something went wrong (ie. no file found)
-		if(fileName != NULL && isLoaded == false) { isErr = true; }												
+		if(fileName != NULL ){ 
+			isSetFile = true;
+			isLoaded = linkFile(fileName);
+			//It may occurr when trying to load, but something went wrong (ie. no file found due to wrong typo name)
+			isErr = isSetFile && !isLoaded;
+		}
 
 		//Copy again the buffer & Find value for operator SCRM (Screen mode)
 		strcpy(ctext,(char *)buffData);
@@ -351,7 +358,10 @@ bool loadDefault(){
 	} else {
 		//Otherwise there is a mistake in CONFIG.CFG file.
 		uiState = READ_FOLDER_ENTRY;
-		if(isErr) (showMSG(ERR_CFG));
+		if(isErr) {
+			showMSG(ERR_CFG);
+			printMSG("Not Found",fileName,"",1000);
+		}
 	}
 
 	return done;

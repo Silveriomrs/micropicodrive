@@ -9,9 +9,7 @@
 
 #include "IO_Cart.h"
 #include "SharedBuffers.h"
-//TODO: Añadidos por añadir, porque realmente no parece que hagan nada al estar ya referenciados en otras partes.
 #include "hardware/spi.h"  //FIXME: Este lo carga en ?????? buscar
-// #include "hardware/gpio.h" //TODO: Este lo carga en MicroDriveControl.c
 //
 #define CONCAT(DEST, SOURCE) sprintf(&DEST[strlen(DEST)],"/%s", SOURCE)
 
@@ -551,16 +549,15 @@ bool isFilePresent(char const *file){return (pf_open(file) == FR_OK);}
 bool loadFile(char const *file, BYTE *buffDataIn, const UINT block, UINT *br){ return (pf_read(buffDataIn, block, br) == FR_OK);}
 
 /**
- * This function load a file from storage device.
+ * This function link a file from storage device.
  *  To do this job, it start checking if the file exist, in case that is present in the storage system,
- *  the function start to check every file in the FAT table of root directory, one by one entry on the table.
- *  Once the right entry is found, the function proceed to load it based on the extension (ie. MDP or MDV),
- *  and return the result of operation. It also sets the enviroment variable and fields to keep registered 
- *  the loaded image, in order to be able to save new datas in the right place/file.
- * @param filename Name of the file image to load.
+ *  the function start to list every file in the FAT table of root directory, one by one entry on the table.
+ *  Once the right entry is found, fno (struct) will aim to the file and its path will be also stored 
+ *  into the struct in order to be able to save new datas in the right place/file.
+ * @param filename Name of the file image to aim.
  * @return TRUE if the operation was done, otherwise FALSE. 
 */
-bool autoLoadFile(char const *fileName){
+bool linkFile(char const *fileName){
     bool done = false;
 	if(!isFilePresent(fileName)) {return false;}
     //Start searching.
