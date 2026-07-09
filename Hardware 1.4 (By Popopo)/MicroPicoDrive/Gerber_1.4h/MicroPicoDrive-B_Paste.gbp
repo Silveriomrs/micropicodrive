@@ -1,12 +1,12 @@
 %TF.GenerationSoftware,KiCad,Pcbnew,9.0.9-9.0.9~ubuntu24.04.1*%
-%TF.CreationDate,2026-06-15T22:19:06+02:00*%
-%TF.ProjectId,MicroPicoDrive,4d696372-6f50-4696-936f-44726976652e,1.4.g*%
+%TF.CreationDate,2026-07-09T23:06:26+02:00*%
+%TF.ProjectId,MicroPicoDrive,4d696372-6f50-4696-936f-44726976652e,1.4.h*%
 %TF.SameCoordinates,Original*%
 %TF.FileFunction,Paste,Bot*%
 %TF.FilePolarity,Positive*%
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW 9.0.9-9.0.9~ubuntu24.04.1) date 2026-06-15 22:19:06*
+G04 Created by KiCad (PCBNEW 9.0.9-9.0.9~ubuntu24.04.1) date 2026-07-09 23:06:26*
 %MOMM*%
 %LPD*%
 G01*
@@ -46,7 +46,7 @@ X132930000Y-112935000D03*
 %TD*%
 D12*
 %TO.C,R1*%
-X141725000Y-79000000D03*
-X141725000Y-80650000D03*
+X141000000Y-78375000D03*
+X141000000Y-80025000D03*
 %TD*%
 M02*

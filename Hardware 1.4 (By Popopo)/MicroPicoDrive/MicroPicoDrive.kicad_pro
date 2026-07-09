@@ -529,7 +529,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "/home/popopo/Git/micropicodrive/Hardware 1.4 (By Popopo)/MicroPicoDrive/Gerber/",
+      "plot": "Gerber_1.4h/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",
@@ -765,7 +765,7 @@
       "meta": {
         "version": 0
       },
-      "model_mode": 0,
+      "model_mode": 4,
       "workbook_filename": ""
     },
     "page_layout_descr_file": "",

@@ -6,6 +6,7 @@ R4: 1K, 0603
 IC1, IC2: SN74LVC1T45DBVR
 IC3: TXU0304PWR
 U1: 7805 TO220 or DC/DC buck module
+D1:	B240 D_SMB (higly recommended but may be 1A diode instead 2A. It is optional and may be skiped: linking both sides with a jumper)
 U2: Raspberry pico
 J1: Card edge connector, 2x8p, 2.54mm, curved pin.
 J2: Male IDC, 2x7p, 2.54mm (check assembly instructions for more details)

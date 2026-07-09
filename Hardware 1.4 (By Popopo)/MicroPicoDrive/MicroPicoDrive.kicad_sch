@@ -8854,7 +8854,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "\nSingle-Bit Dual-Supply Bus Transceiver with Configurable Voltage-Level Shifting and 3-State Outputs\n"
+		(property "Description" "Single-Bit Dual-Supply Bus Transceiver with Configurable Voltage-Level Shifting and 3-State Outputs"
 			(at 129.54 67.31 0)
 			(effects
 				(font
@@ -9735,7 +9735,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "\nSingle-Bit Dual-Supply Bus Transceiver with Configurable Voltage-Level Shifting and 3-State Outputs\n"
+		(property "Description" "Single-Bit Dual-Supply Bus Transceiver with Configurable Voltage-Level Shifting and 3-State Outputs"
 			(at 129.54 40.64 0)
 			(effects
 				(font

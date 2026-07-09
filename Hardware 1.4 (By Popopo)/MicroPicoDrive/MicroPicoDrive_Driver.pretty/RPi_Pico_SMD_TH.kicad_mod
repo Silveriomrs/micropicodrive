@@ -1460,6 +1460,14 @@
 		(uuid "13ac70df-e9b9-44e5-96e6-20f0b0dc6a3a")
 	)
 	(pad "23" thru_hole rect
+		(at 8.89 6.35)
+		(size 1.7 1.7)
+		(drill 1.02)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "05a5364e-b9b9-48b7-a9a2-f32e9558838d")
+	)
+	(pad "23" thru_hole rect
 		(at 8.89 19.05)
 		(size 1.7 1.7)
 		(drill 1.02)
