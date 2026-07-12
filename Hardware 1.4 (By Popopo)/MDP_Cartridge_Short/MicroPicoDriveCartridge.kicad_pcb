@@ -22302,7 +22302,7 @@
 		)
 	)
 	(gr_text "Important.\nThe mSD limit is place to the EDGE of the cartridge, \nif any of those vary it could not fit the perfect place that is set now."
-		(at 148.1 118.5 0)
+		(at 150.49 126.59 0)
 		(layer "Cmts.User")
 		(uuid "23a9734c-5896-4706-8d79-5cf50b7e3cc6")
 		(effects
@@ -22313,8 +22313,8 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "Pin#14 is UI_Detect that close the grund laze when the cartridge is inserted."
-		(at 171.725 68.6 0)
+	(gr_text "Pin#14 is UI_Detect that close the ground laze when the cartridge is inserted."
+		(at 170.23 67.47 0)
 		(layer "Cmts.User")
 		(uuid "bcf0c433-c6ad-45a3-9445-88190714a7fb")
 		(effects
