@@ -22387,6 +22387,18 @@
 			(justify left bottom mirror)
 		)
 	)
+	(gr_text "WayWayWay"
+		(at 141.7 107.2 0)
+		(layer "B.SilkS")
+		(uuid "20ebb90a-747b-41a4-a454-ddde3a276f9a")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify left bottom mirror)
+		)
+	)
 	(gr_text "JLCJLCJLCJLC"
 		(at 143.325 104.15 0)
 		(layer "B.SilkS")
