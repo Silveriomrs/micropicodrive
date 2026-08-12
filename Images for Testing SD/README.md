@@ -6,7 +6,7 @@
 
 The microdrives images presented here are only for testing purpose. Thus you can find software ready to load into your QL system and others that need some works with [MDTools (From Dr. Gusman)](https://github.com/gusmanb/micropicodrive/releases/tag/V1.0.0.0) or another similar tool.
 
-In particular part of the PSION software is not prepared yet to be loaded successfully in a real QL (but Abacus). It allows you to understand the complexity and how MDV images are required to be adapted for emulators or some devices. What means it is not related with an specific hardware solution but how datas are modified by some OSes (_ie. MS Windows_) when they are stored in its file system.
+In particular part of the PSION software is not prepared yet to be loaded successfully in a real QL with Minerva ROM (but Abacus). It allows you to understand the complexity and how MDV images are required to be adapted for emulators or some devices. What means it is not related with an specific hardware solution but how datas are modified by some OSes (_ie. MS Windows_) when they are stored in its file system or even the QL ROM you are using.
 
 The idea is to give few images to play around directly with QL and enjoy the MicroDrivePico solution (also name here as MPD). Others to learn to control the MDTools and how the QL ecosystem fight between different formats and issues from a highly complex legacy reasons.
 

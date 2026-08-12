@@ -3,11 +3,14 @@
 
 ---
 
-UPDATE 10/06/2026
+UPDATE 12/08/2026
 
 > [!NOTE]
-> _New revision of the driver & cartridges with extra protection and stable signals. Firmware revision 0.14 improved & stable. Firmware & driver tested, not tested last cartridge sub-version 'e' yet_
+> _New revisions of the driver & cartridges with extra EMI & electrical protection and improving signals. Firmware revision 0.14 improved & stable. Firmware & driver tested, tested last cartridge sub-version 'e' for 4 weeks. Added 3D case (STL) created by Jbizze for short cartridge version to its link_.
 
+
+> [!TIP]
+> All material (Gerbers, BOM, etc) & user guides at the bottom of the page.
 ---
 
 This branch is for the new 1.4 version of the MicroPicoDrive.
@@ -17,11 +20,16 @@ This version was created by Silverio MRS (AKA Popopo) from [Dr. Gusman's origina
 <img src="Images/Main Photo.png"  width="700">
 </p>
 
-The image above shows the main driver unit and the 2 cartridges versions with long and short wings (_handles_). Long wings allows to manipulate the cartridge easily reducing mechanical pressure. Shorts instead gives an old fashion shape and allows to be stored into the old (used) black boxes of QL time.
+The image above shows the main driver unit and the 2 cartridges versions with long and short wings (_handles_). Long wings allows to manipulate the cartridge easily reducing mechanical pressure. Shorts instead gives an old fashion shape and allows to be stored into the old (used) black boxes of QL time. Also wearing the 3D case created by Jbizze for the short version cartridge.
 
 <p align="center">
-<img src="Images/short version into box.png"  width="200">
+<img src="Images/short version into box.png"  width="200"><img src="Images/Jbizze_Case_2.jpg"  width="200">
 </p>
+
+---
+The next link is a fast view with a demo of the device [Short video demo on Youtube](https://youtu.be/dqscsMP1UB8).
+
+
 
 ---
 _Schema of the driver unit that goes inside the QL._
@@ -74,8 +82,9 @@ It makes sense if the idea is to get chances of scalability and maintenance by t
 + Solved problem with QL metal chassis under keyboard.
 + Solved problem with right lateral QL case and the regulator.
 + Sound System ready for sound emulation or new features related with it (Working in progress).
-+ Added decoupling capacitors to make signals more stable for oLED.
++ Added decoupling capacitors to make signals more stable for oLED & mSD.
 + Added schottky diode on the driver that allows program it without disconecting from the main QL PCB. For extra it gives extra protection.
++ Cartridges now has pads retraived for power lines and detection.
 
 
 ## What is coming (TODO functionalities)
@@ -108,8 +117,14 @@ The next videos were made in order to make easier to everyone the understanding 
 - [User's Guide I](https://youtu.be/wyJjXfhqH4E) user's guide to change the firmware, prepare the SD, customize your preferences & browse it.
 - [User's Guide II](https://youtu.be/AZIg0KIsFko) shows how to use the basis functions of the MDTools to create a new MDV image, also it shows the most common mistakes.
 
-# Gerbers & Firmware
+# Gerbers, Firmware & more 
 To download and make the devices on your own using my design you can access to the Gerbers and Firmwares at the release section:
 [Releases Gerbers & Firmware](https://github.com/Silveriomrs/micropicodrive/releases/tag/v1.4)
 
-For i/BOM check directory: [Schmems & i/BOMs](https://github.com/Silveriomrs/micropicodrive/tree/1.4/Hardware%201.4%20(By%20Popopo))
+For i/BOM check directory: [Schmems & i/BOMs](https://github.com/Silveriomrs/micropicodrive/tree/1.4/Hardware%201.4%20(By%20Popopo)/Schems%20&%20BOMs)
+
+For 3D case created by Jbizze for short cartridge version: [STL from Thingverse](https://www.thingiverse.com/thing:6886864) or to Download directly: [Releases Gerbers & Firmware](https://github.com/Silveriomrs/micropicodrive/releases/tag/v1.4)
+
+<p align="center">
+<img src="Images/Jbizze_Case_1.jpg"  width="200">
+</p>
