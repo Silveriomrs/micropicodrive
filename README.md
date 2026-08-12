@@ -121,6 +121,8 @@ The next videos were made in order to make easier to everyone the understanding 
 To download and make the devices on your own using my design you can access to the Gerbers and Firmwares at the release section:
 [Releases Gerbers & Firmware](https://github.com/Silveriomrs/micropicodrive/releases/tag/v1.4)
 
+For detailed information about revisions of drivers or cartridges go to see: [Gerbers Descriptions Section](https://github.com/Silveriomrs/micropicodrive/tree/1.4/Hardware%201.4%20(By%20Popopo)/Gerbers)
+
 For i/BOM check directory: [Schmems & i/BOMs](https://github.com/Silveriomrs/micropicodrive/tree/1.4/Hardware%201.4%20(By%20Popopo)/Schems%20&%20BOMs)
 
 For 3D case created by Jbizze for short cartridge version: [STL from Thingverse](https://www.thingiverse.com/thing:6886864) or to Download directly: [Releases Gerbers & Firmware](https://github.com/Silveriomrs/micropicodrive/releases/tag/v1.4)
