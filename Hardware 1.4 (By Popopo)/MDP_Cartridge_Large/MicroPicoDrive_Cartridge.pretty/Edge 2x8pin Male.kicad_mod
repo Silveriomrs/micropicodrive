@@ -52,8 +52,30 @@
 		)
 	)
 	(attr allow_missing_courtyard)
+	(fp_rect
+		(start -11.7 -4.95)
+		(end 11.75 3.3)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill yes)
+		(layer "F.Mask")
+		(uuid "311d9ef1-1647-4916-82d0-4f936c795169")
+	)
+	(fp_rect
+		(start -11.5 -4.95)
+		(end 11.55 3.3)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill yes)
+		(layer "B.Mask")
+		(uuid "2a0459cf-1a8b-4358-ba75-0da53f1e8698")
+	)
 	(fp_line
-		(start -15.4 5.4)
+		(start -15.4 31.63)
 		(end -15.4 -2.590983)
 		(stroke
 			(width 0.12)
@@ -173,7 +195,7 @@
 		(uuid "8f0e1ea6-d278-4117-9e02-aaadcc59362e")
 	)
 	(fp_line
-		(start 15.4 5.4)
+		(start 15.4 31.63)
 		(end 15.4 -2.590983)
 		(stroke
 			(width 0.12)
@@ -413,8 +435,8 @@
 		(uuid "f6dcb5b4-0971-448a-b9ab-6db37a750704")
 	)
 	(pad "14" smd roundrect
-		(at 6.35 1.25)
-		(size 2 5.5)
+		(at 6.35 1.5)
+		(size 2 5)
 		(layers "B.Cu" "B.Mask" "B.Paste")
 		(roundrect_rratio 0.25)
 		(uuid "de2abbd8-9b48-47ba-b77e-4c65ca048af6")

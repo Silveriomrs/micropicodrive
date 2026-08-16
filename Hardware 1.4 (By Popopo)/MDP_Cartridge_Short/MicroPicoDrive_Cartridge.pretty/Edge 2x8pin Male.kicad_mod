@@ -3,6 +3,7 @@
 	(generator "pcbnew")
 	(generator_version "9.0")
 	(layer "F.Cu")
+	(descr "Designed by Popopo for MDV Cartridge")
 	(property "Reference" "REF**"
 		(at -10.5664 -8.9944 0)
 		(unlocked yes)
@@ -51,20 +52,32 @@
 			)
 		)
 	)
-	(attr smd)
-	(fp_line
-		(start -15.4 -3.4)
-		(end -13.4 -2.4)
+	(attr allow_missing_courtyard allow_soldermask_bridges)
+	(fp_rect
+		(start -11.7 -4.95)
+		(end 11.75 3.3)
 		(stroke
-			(width 0.12)
+			(width 0.1)
 			(type solid)
 		)
-		(layer "Edge.Cuts")
-		(uuid "20ac7a70-5cb9-4418-b061-8e4ee8d36b79")
+		(fill yes)
+		(layer "F.Mask")
+		(uuid "311d9ef1-1647-4916-82d0-4f936c795169")
+	)
+	(fp_rect
+		(start -11.5 -4.95)
+		(end 11.55 3.3)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill yes)
+		(layer "B.Mask")
+		(uuid "2a0459cf-1a8b-4358-ba75-0da53f1e8698")
 	)
 	(fp_line
-		(start -15.4 5.4)
-		(end -15.4 -3.4)
+		(start -15.4 31.63)
+		(end -15.4 -2.590983)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -73,8 +86,18 @@
 		(uuid "dbc9643b-8b89-4ff3-80f6-063535be3753")
 	)
 	(fp_line
+		(start -14.676393 -3.038196)
+		(end -14.505573 -2.952786)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "Edge.Cuts")
+		(uuid "20ac7a70-5cb9-4418-b061-8e4ee8d36b79")
+	)
+	(fp_line
 		(start -13.4 5.4)
-		(end -13.4 -2.4)
+		(end -13.4 -1.163932)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -83,7 +106,7 @@
 		(uuid "22591446-6d82-47ac-b525-9e9deb496c8c")
 	)
 	(fp_line
-		(start -11.5 -3.4)
+		(start -11.5 -3.192893)
 		(end -11.5 5.4)
 		(stroke
 			(width 0.12)
@@ -103,8 +126,8 @@
 		(uuid "a0af1aa5-82ff-4825-8836-86496e7db65f")
 	)
 	(fp_line
-		(start -10.5 -4.4)
-		(end -11.5 -3.4)
+		(start -10.646447 -4.253553)
+		(end -11.353554 -3.546446)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -113,8 +136,8 @@
 		(uuid "b71ea2fc-03b3-4a1a-950e-5a040f1be797")
 	)
 	(fp_line
-		(start -10.5 -4.4)
-		(end 10.5 -4.4)
+		(start -10.292893 -4.4)
+		(end 10.292893 -4.4)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -123,8 +146,8 @@
 		(uuid "3c5840eb-164e-426c-ab78-faa89624b9dc")
 	)
 	(fp_line
-		(start 10.5 -4.4)
-		(end 11.5 -3.4)
+		(start 10.646447 -4.253553)
+		(end 11.353554 -3.546446)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -133,7 +156,7 @@
 		(uuid "84282cc7-416d-48c2-ae9f-c0149b35065e")
 	)
 	(fp_line
-		(start 11.5 -3.4)
+		(start 11.5 -3.192893)
 		(end 11.5 5.4)
 		(stroke
 			(width 0.12)
@@ -153,18 +176,8 @@
 		(uuid "08fae221-7b6f-4c57-be73-6210c6206091")
 	)
 	(fp_line
-		(start 13.4 -2.4)
-		(end 15.4 -3.4)
-		(stroke
-			(width 0.12)
-			(type solid)
-		)
-		(layer "Edge.Cuts")
-		(uuid "8f0e1ea6-d278-4117-9e02-aaadcc59362e")
-	)
-	(fp_line
 		(start 13.4 5.4)
-		(end 13.4 -2.4)
+		(end 13.4 -1.163932)
 		(stroke
 			(width 0.12)
 			(type solid)
@@ -173,14 +186,112 @@
 		(uuid "d9c1c6f8-c198-49f9-bff0-eab2393a0053")
 	)
 	(fp_line
-		(start 15.4 5.4)
-		(end 15.4 -3.4)
+		(start 14.505573 -2.952786)
+		(end 14.676393 -3.038196)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "Edge.Cuts")
+		(uuid "8f0e1ea6-d278-4117-9e02-aaadcc59362e")
+	)
+	(fp_line
+		(start 15.4 31.63)
+		(end 15.4 -2.590983)
 		(stroke
 			(width 0.12)
 			(type solid)
 		)
 		(layer "Edge.Cuts")
 		(uuid "ddb83956-0781-4967-adf3-cb27a82b32ef")
+	)
+	(fp_arc
+		(start -15.4 -2.590983)
+		(mid -15.162865 -3.016309)
+		(end -14.676393 -3.038196)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "fd8a0513-8b76-4293-9c4d-6fbeb0756755")
+	)
+	(fp_arc
+		(start -14.505573 -2.952786)
+		(mid -13.698699 -2.215394)
+		(end -13.4 -1.163932)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "d33b320a-8d73-4875-812f-442b1a158663")
+	)
+	(fp_arc
+		(start -11.5 -3.192893)
+		(mid -11.46194 -3.384235)
+		(end -11.353554 -3.546446)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "40f5456b-1020-41d9-bb54-a4dac6d7cab8")
+	)
+	(fp_arc
+		(start -10.646447 -4.253553)
+		(mid -10.484235 -4.36194)
+		(end -10.292893 -4.4)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "a9457240-e2e1-4743-a377-d65c9205c66b")
+	)
+	(fp_arc
+		(start 10.292893 -4.4)
+		(mid 10.484235 -4.36194)
+		(end 10.646447 -4.253553)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "3645b923-fdd1-4d7d-8e81-3322e7b8fe24")
+	)
+	(fp_arc
+		(start 11.353554 -3.546446)
+		(mid 11.461938 -3.384234)
+		(end 11.5 -3.192893)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "fb428015-af62-4fcc-b585-61905dcbe464")
+	)
+	(fp_arc
+		(start 13.4 -1.163932)
+		(mid 13.698711 -2.215382)
+		(end 14.505573 -2.952786)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "a446f9d8-0014-4e52-bfac-26ef8ba53aaf")
+	)
+	(fp_arc
+		(start 14.676393 -3.038196)
+		(mid 15.162865 -3.016308)
+		(end 15.4 -2.590983)
+		(stroke
+			(width 0.12)
+			(type default)
+		)
+		(layer "Edge.Cuts")
+		(uuid "124f57a0-e339-4a6b-9bf1-5f590db5d570")
 	)
 	(fp_text user "Pin#1 Vcc"
 		(at -8.35 14.55 90)
@@ -325,8 +436,8 @@
 		(uuid "f6dcb5b4-0971-448a-b9ab-6db37a750704")
 	)
 	(pad "14" smd roundrect
-		(at 6.35 1.25)
-		(size 2 5.5)
+		(at 6.35 1.5)
+		(size 2 5)
 		(layers "B.Cu" "B.Mask" "B.Paste")
 		(roundrect_rratio 0.25)
 		(uuid "de2abbd8-9b48-47ba-b77e-4c65ca048af6")
@@ -357,7 +468,7 @@
 		(min_thickness 0.25)
 		(filled_areas_thickness no)
 		(keepout
-			(tracks allowed)
+			(tracks not_allowed)
 			(vias not_allowed)
 			(pads allowed)
 			(copperpour not_allowed)
@@ -373,7 +484,7 @@
 		)
 		(polygon
 			(pts
-				(xy 11.45 5.4) (xy 11.45 -3.375) (xy 10.5 -4.35) (xy -10.475 -4.35) (xy -11.45 -3.375) (xy -11.45 5.4)
+				(xy 11.55 3.3) (xy 11.5 -4.95) (xy -11.5 -4.95) (xy -11.45 3.3)
 			)
 		)
 	)
